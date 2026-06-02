@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ComponentCard } from "@/components/component-log/ComponentCard";
 import { Card } from "@/components/ui/Card";
+import { ComponentRegistryClient } from "@/components/component-log/ComponentRegistryClient";
 import { mockComponents } from "@/data/mock-components";
 import {
   formatComponentStatus,
@@ -148,31 +148,7 @@ export default function ComponentsPage() {
           </div>
         </section>
 
-        <section
-          aria-labelledby="component-list-title"
-          className="rounded-[2rem] border border-[var(--border)] bg-black/25 p-4 backdrop-blur-xl sm:p-6"
-        >
-          <div className="flex flex-col gap-3 border-b border-[var(--border)] pb-5 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--turquoise)]">
-                Records
-              </p>
-              <h2 id="component-list-title" className="mt-2 text-3xl font-black">
-                All documented components
-              </h2>
-            </div>
-
-            <p className="text-sm text-[var(--muted)]">
-              Showing {sortedComponents.length} component records
-            </p>
-          </div>
-
-          <div className="mt-6 grid gap-4 lg:grid-cols-2">
-            {sortedComponents.map((component) => (
-              <ComponentCard key={component.id} component={component} />
-            ))}
-          </div>
-        </section>
+        <ComponentRegistryClient components={sortedComponents} />
       </div>
     </main>
   );
