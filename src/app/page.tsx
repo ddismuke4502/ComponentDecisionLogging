@@ -94,7 +94,10 @@ const pipelineRows = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden px-4 py-4 text-[var(--foreground)] sm:px-6 lg:px-8">
+    <main
+      id="main-content"
+      className="min-h-screen overflow-hidden px-4 py-4 text-[var(--foreground)] sm:px-6 lg:px-8"
+    >
       <div className="pointer-events-none fixed inset-0 opacity-40">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(45,212,191,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.05)_1px,transparent_1px)] bg-[size:84px_84px]" />
         <div className="absolute left-1/2 top-0 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-purple-600/10 blur-3xl" />
@@ -316,10 +319,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section
-              id="system-panels"
-              className="grid gap-4 lg:grid-cols-3"
-            >
+            <section id="system-panels" className="grid gap-4 lg:grid-cols-3">
               <article className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl">
                 <PanelHeader
                   eyebrow="Registry Preview"
