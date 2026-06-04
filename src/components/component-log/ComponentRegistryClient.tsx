@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ComponentCard } from "@/components/component-log/ComponentCard";
+import { EmptyState } from "@/components/ui/EmptyState";
 import type {
   ComponentCategory,
   ComponentFilters,
@@ -41,8 +42,14 @@ export function ComponentRegistryClient({
 }: ComponentRegistryClientProps) {
   const [filters, setFilters] = useState<ComponentFilters>(initialFilters);
 
-  const ownerTeams = useMemo(() => getUniqueOwnerTeams(components), [components]);
-  const categories = useMemo(() => getUniqueCategories(components), [components]);
+  const ownerTeams = useMemo(
+    () => getUniqueOwnerTeams(components),
+    [components],
+  );
+  const categories = useMemo(
+    () => getUniqueCategories(components),
+    [components],
+  );
 
   const filteredComponents = useMemo(
     () => filterComponents(components, filters),
@@ -224,26 +231,13 @@ export function ComponentRegistryClient({
           ))}
         </div>
       ) : (
-        <Card as="div" className="mt-6 text-center">
-          <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--turquoise)]">
-            No Results
-          </p>
-          <h3 className="mt-3 text-2xl font-black">
-            No component records match those filters.
-          </h3>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-[var(--muted)]">
-            Try adjusting the search text, status, category, or owner filters to
-            find matching component decisions.
-          </p>
-          <Button
-            type="button"
-            onClick={resetFilters}
-            disabled={!hasActiveFilters}
-            className="mt-6"
-          >
-            Clear Filters
-          </Button>
-        </Card>
+        <EmptyState
+          eyebrow="No Results"
+          title="No component records match those filters."
+          description="Try adjusting the search text, status, category, or owner filters to find matching component decisions."
+          actionLabel="Clear Filters"
+          onAction={resetFilters}
+        />
       )}
     </section>
   );
