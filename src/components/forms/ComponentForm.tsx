@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import { ComponentIdentityStep } from "@/components/forms/steps/ComponentIdentityStep";
 import type {
   ApiMethod,
   ComponentCategory,
@@ -127,13 +128,16 @@ const apiMethodOptions = [
   "DELETE",
 ] as const satisfies ApiMethod[];
 
-const impactOptions = ["low", "medium", "high"] as const satisfies DecisionImpact[];
+const impactOptions = [
+  "low",
+  "medium",
+  "high",
+] as const satisfies DecisionImpact[];
 
 export function ComponentForm() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [submittedRecord, setSubmittedRecord] = useState<ComponentRecord | null>(
-    null,
-  );
+  const [submittedRecord, setSubmittedRecord] =
+    useState<ComponentRecord | null>(null);
 
   const defaultValues = useMemo(() => createDefaultComponentFormValues(), []);
 
@@ -154,34 +158,34 @@ export function ComponentForm() {
   const isFirstStep = currentStepIndex === 0;
   const isLastStep = currentStepIndex === formSteps.length - 1;
 
-const watchedName = useWatch({
-  control,
-  name: "name",
-});
+  const watchedName = useWatch({
+    control,
+    name: "name",
+  });
 
-const watchedSlug = useWatch({
-  control,
-  name: "slug",
-});
+  const watchedSlug = useWatch({
+    control,
+    name: "slug",
+  });
 
-const watchedTags = useWatch({
-  control,
-  name: "tags",
-});
+  const watchedTags = useWatch({
+    control,
+    name: "tags",
+  });
 
-const watchedAccessibilityNotes = useWatch({
-  control,
-  name: "accessibilityNotes",
-});
+  const watchedAccessibilityNotes = useWatch({
+    control,
+    name: "accessibilityNotes",
+  });
 
-const watchedApiMethod = useWatch({
-  control,
-  name: "apiContract.method",
-});
+  const watchedApiMethod = useWatch({
+    control,
+    name: "apiContract.method",
+  });
 
-const previewValues = useWatch({
-  control,
-});
+  const previewValues = useWatch({
+    control,
+  });
 
   function updateSlugFromName() {
     if (!watchedSlug?.trim()) {
@@ -282,45 +286,13 @@ const previewValues = useWatch({
 
       <Card as="section" className="p-5 sm:p-6">
         {currentStep.id === "identity" ? (
-          <div className="grid gap-5">
-            <Input
-              id="component-name"
-              label="Component name"
-              placeholder="PrimaryActionButton"
-              helperText="Use a clear PascalCase component name."
-              error={errors.name?.message}
-              {...register("name", {
-                onBlur: updateSlugFromName,
-              })}
-            />
-
-            <Input
-              id="component-slug"
-              label="Slug"
-              placeholder="primary-action-button"
-              helperText="Used for the component detail URL."
-              error={errors.slug?.message}
-              {...register("slug")}
-            />
-
-            <Textarea
-              id="component-summary"
-              label="Summary"
-              placeholder="Describe what this component does, where it is used, and why it exists."
-              error={errors.summary?.message}
-              {...register("summary")}
-            />
-
-            <Input
-              id="component-tags"
-              label="Tags"
-              placeholder="button, cta, forms, accessibility"
-              helperText="Comma-separated tags."
-              value={joinCommaSeparatedValues(watchedTags ?? [])}
-              error={errors.tags?.message}
-              onChange={(event) => updateTags(event.target.value)}
-            />
-          </div>
+          <ComponentIdentityStep
+            register={register}
+            errors={errors}
+            watchedTags={watchedTags ?? []}
+            updateTags={updateTags}
+            updateSlugFromName={updateSlugFromName}
+          />
         ) : null}
 
         {currentStep.id === "ownership" ? (
