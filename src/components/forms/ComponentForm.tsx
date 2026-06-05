@@ -183,6 +183,31 @@ export function ComponentForm() {
     name: "apiContract.method",
   });
 
+  const watchedOwnerTeam = useWatch({
+    control,
+    name: "owner.team",
+  });
+
+  const watchedStatus = useWatch({
+    control,
+    name: "status",
+  });
+
+  const watchedCategory = useWatch({
+    control,
+    name: "category",
+  });
+
+  const watchedPlatform = useWatch({
+    control,
+    name: "platform",
+  });
+
+  const watchedSummary = useWatch({
+    control,
+    name: "summary",
+  });
+
   const previewValues = useWatch({
     control,
   });
@@ -501,30 +526,37 @@ export function ComponentForm() {
             </p>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <ReviewTile label="Name" value={previewValues.name || "—"} />
-              <ReviewTile label="Slug" value={previewValues.slug || "—"} />
-              <ReviewTile
-                label="Owner"
-                value={previewValues.owner.team || "—"}
-              />
+              <ReviewTile label="Name" value={watchedName || "—"} />
+              <ReviewTile label="Slug" value={watchedSlug || "—"} />
+              <ReviewTile label="Owner" value={watchedOwnerTeam || "—"} />
               <ReviewTile
                 label="Status"
-                value={componentStatusLabels[previewValues.status]}
+                value={
+                  watchedStatus ? componentStatusLabels[watchedStatus] : "—"
+                }
               />
               <ReviewTile
                 label="Category"
-                value={componentCategoryLabels[previewValues.category]}
+                value={
+                  watchedCategory
+                    ? componentCategoryLabels[watchedCategory]
+                    : "—"
+                }
               />
               <ReviewTile
                 label="Platform"
-                value={componentPlatformLabels[previewValues.platform]}
+                value={
+                  watchedPlatform
+                    ? componentPlatformLabels[watchedPlatform]
+                    : "—"
+                }
               />
             </div>
 
             <Card as="div" className="mt-5 p-5">
               <h4 className="font-black">Summary</h4>
               <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                {previewValues.summary || "No summary entered yet."}
+                {watchedSummary || "No summary entered yet."}
               </p>
             </Card>
 
