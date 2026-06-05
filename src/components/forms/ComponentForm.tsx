@@ -6,16 +6,11 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
-import { Select } from "@/components/ui/Select";
-import { Textarea } from "@/components/ui/Textarea";
 import { ComponentIdentityStep } from "@/components/forms/steps/ComponentIdentityStep";
 import { ComponentOwnershipStep } from "@/components/forms/steps/ComponentOwnershipStep";
 import { ComponentContractStep } from "@/components/forms/steps/ComponentContractStep";
-import type {
-  ComponentRecord,
-  DecisionImpact,
-} from "@/features/components/component-types";
+import { ComponentDecisionStep } from "@/components/forms/steps/ComponentDecisionStep";
+import type { ComponentRecord } from "@/features/components/component-types";
 import {
   componentFormSchema,
   type ComponentFormValues,
@@ -91,12 +86,6 @@ const formSteps: FormStep[] = [
     fields: [],
   },
 ];
-
-const impactOptions = [
-  "low",
-  "medium",
-  "high",
-] as const satisfies DecisionImpact[];
 
 export function ComponentForm() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -281,54 +270,7 @@ export function ComponentForm() {
         ) : null}
 
         {currentStep.id === "decision" ? (
-          <div className="grid gap-5">
-            <Input
-              id="decision-title"
-              label="Decision title"
-              placeholder="Use native button semantics"
-              error={errors.decisions?.[0]?.title?.message}
-              {...register("decisions.0.title")}
-            />
-
-            <Textarea
-              id="decision-summary"
-              label="Decision summary"
-              placeholder="Summarize the decision in one or two sentences."
-              error={errors.decisions?.[0]?.summary?.message}
-              {...register("decisions.0.summary")}
-            />
-
-            <Textarea
-              id="decision-rationale"
-              label="Decision rationale"
-              placeholder="Explain why this decision was made and what tradeoffs it addresses."
-              error={errors.decisions?.[0]?.rationale?.message}
-              {...register("decisions.0.rationale")}
-            />
-
-            <div className="grid gap-5 md:grid-cols-2">
-              <Input
-                id="decision-author"
-                label="Decision author"
-                placeholder="Dameion Dismuke"
-                error={errors.decisions?.[0]?.author?.message}
-                {...register("decisions.0.author")}
-              />
-
-              <Select
-                id="decision-impact"
-                label="Decision impact"
-                error={errors.decisions?.[0]?.impact?.message}
-                {...register("decisions.0.impact")}
-              >
-                {impactOptions.map((impact) => (
-                  <option key={impact} value={impact}>
-                    {impact}
-                  </option>
-                ))}
-              </Select>
-            </div>
-          </div>
+          <ComponentDecisionStep register={register} errors={errors} />
         ) : null}
 
         {currentStep.id === "review" ? (
