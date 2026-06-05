@@ -86,6 +86,12 @@ export default function ComponentsPage() {
                 Static registry route using typed mock data. Search and filters
                 come next.
               </p>
+              <Link
+                href="/components/new"
+                className="mt-4 inline-flex rounded-full border border-[var(--border)] px-4 py-2 text-sm font-black text-[var(--turquoise-soft)] transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+              >
+                Add Component
+              </Link>
             </div>
           </div>
         </header>
@@ -120,7 +126,10 @@ export default function ComponentsPage() {
               <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--turquoise)]">
                 Lifecycle Overview
               </p>
-              <h2 id="status-overview-title" className="mt-2 text-2xl font-black">
+              <h2
+                id="status-overview-title"
+                className="mt-2 text-2xl font-black"
+              >
                 Component records by status
               </h2>
             </div>
