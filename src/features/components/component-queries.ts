@@ -2,8 +2,16 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { mockComponents } from "@/data/mock-components";
+import {
+  getComponentFromFirestoreBySlug,
+  getComponentsFromFirestore,
+} from "@/features/components/component-firestore";
 import type { ComponentRecord } from "@/features/components/component-types";
-import { sortComponentsByUpdatedDate } from "@/features/components/component-utils";
+import {
+  getComponentBySlug,
+  sortComponentsByUpdatedDate,
+} from "@/features/components/component-utils";
+import { isFirebaseConfigured } from "@/lib/firebase/client";
 
 export const componentQueryKeys = {
   all: ["components"] as const,
@@ -23,24 +31,32 @@ export function useComponentsQuery(initialData?: ComponentRecord[]) {
 export function useComponentQuery(slug: string) {
   return useQuery({
     queryKey: componentQueryKeys.detail(slug),
-    queryFn: () => getComponentBySlug(slug),
+    queryFn: () => getComponentBySlugFromDataSource(slug),
   });
 }
 
 async function getComponents() {
   await simulateNetworkDelay();
 
+  if (isFirebaseConfigured) {
+    return getComponentsFromFirestore();
+  }
+
   return sortComponentsByUpdatedDate(mockComponents);
 }
 
-async function getComponentBySlug(slug: string) {
+async function getComponentBySlugFromDataSource(slug: string) {
   await simulateNetworkDelay();
 
-  return mockComponents.find((component) => component.slug === slug) ?? null;
+  if (isFirebaseConfigured) {
+    return getComponentFromFirestoreBySlug(slug);
+  }
+
+  return getComponentBySlug(mockComponents, slug) ?? null;
 }
 
 function simulateNetworkDelay() {
   return new Promise((resolve) => {
-    window.setTimeout(resolve, 250);
+    globalThis.setTimeout(resolve, 250);
   });
 }
