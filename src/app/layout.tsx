@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SkipLink } from "@/components/layout/SkipLink";
+import { QueryProvider } from "@/lib/query/QueryProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -32,8 +33,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SkipLink />
-        {children}
+        <QueryProvider>
+          <SkipLink />
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );

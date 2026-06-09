@@ -157,7 +157,7 @@ export default function ComponentsPage() {
           </div>
         </section>
 
-        <ComponentRegistryClient components={sortedComponents} />
+        <ComponentRegistryClient initialComponents={sortedComponents} />
       </div>
     </main>
   );

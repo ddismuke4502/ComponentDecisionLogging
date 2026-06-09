@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ComponentCard } from "@/components/component-log/ComponentCard";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { RegistrySkeletonGrid } from "@/components/ui/Skeleton";
+import { useComponentsQuery } from "@/features/components/component-queries";
 import type {
   ComponentCategory,
   ComponentFilters,
@@ -20,7 +22,7 @@ import {
 } from "@/features/components/component-utils";
 
 type ComponentRegistryClientProps = {
-  components: ComponentRecord[];
+  initialComponents: ComponentRecord[];
 };
 
 const statusOptions = [
@@ -38,8 +40,14 @@ const initialFilters: ComponentFilters = {
 };
 
 export function ComponentRegistryClient({
-  components,
+  initialComponents,
 }: ComponentRegistryClientProps) {
+  const {
+    data: components = [],
+    isLoading,
+    isFetching,
+  } = useComponentsQuery(initialComponents);
+
   const [filters, setFilters] = useState<ComponentFilters>(initialFilters);
 
   const ownerTeams = useMemo(
@@ -114,8 +122,8 @@ export function ComponentRegistryClient({
           aria-live="polite"
           aria-atomic="true"
         >
-          Showing {filteredComponents.length} of {components.length} component
-          records
+          {isFetching ? "Refreshing " : "Showing "}
+          {filteredComponents.length} of {components.length} component records
         </p>
       </div>
 
@@ -224,7 +232,9 @@ export function ComponentRegistryClient({
         </div>
       </Card>
 
-      {filteredComponents.length > 0 ? (
+      {isLoading ? (
+        <RegistrySkeletonGrid />
+      ) : filteredComponents.length > 0 ? (
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
           {filteredComponents.map((component) => (
             <ComponentCard key={component.id} component={component} />
