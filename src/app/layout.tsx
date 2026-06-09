@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SkipLink } from "@/components/layout/SkipLink";
 import { QueryProvider } from "@/lib/query/QueryProvider";
+import { AuthProvider } from "@/features/auth/auth-context";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -34,8 +35,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryProvider>
-          <SkipLink />
-          {children}
+          <AuthProvider>
+            <SkipLink />
+            {children}
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

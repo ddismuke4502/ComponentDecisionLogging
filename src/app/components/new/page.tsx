@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ComponentForm } from "@/components/forms/ComponentForm";
+import { AuthGate } from "@/features/auth/AuthGate";
 
 export const metadata: Metadata = {
   title: "Add Component",
@@ -37,7 +38,9 @@ export default function NewComponentPage() {
           </p>
         </header>
 
-        <ComponentForm />
+        <AuthGate>
+          <ComponentForm />
+        </AuthGate>
       </div>
     </main>
   );
