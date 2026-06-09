@@ -1,5 +1,7 @@
 # Component Decision Log
 
+[![CI](https://github.com/ddismuke4502/ComponentDecisionLogging/actions/workflows/ci.yml/badge.svg)](https://github.com/ddismuke4502/ComponentDecisionLogging/actions/workflows/ci.yml)
+
 A portfolio-grade frontend engineering project for documenting reusable UI component decisions across frontend and mobile engineering teams.
 
 Component Decision Log helps teams track component metadata, ownership, status, props, state, API contracts, related components, accessibility notes, and the reasoning behind component-level decisions.
@@ -70,6 +72,27 @@ The goal is to demonstrate production-minded frontend engineering through:
 | GitHub Actions        | CI pipeline                                     |
 | GSAP                  | Professional animation polish                   |
 | Vercel                | Deployment                                      |
+
+
+## Quality Gates
+
+This project is intentionally built with quality gates that mirror production frontend workflows.
+
+| Quality Gate               | Status      |
+| -------------------------- | ----------- |
+| TypeScript strict modeling | In progress |
+| Accessible UI primitives   | In progress |
+| Form validation with Zod   | Added       |
+| Unit tests                 | Added       |
+| Component rendering tests  | Added       |
+| GitHub Actions CI          | Added       |
+| Responsive layouts         | In progress |
+| Skeleton and empty states  | Added       |
+| Firebase Auth              | Planned     |
+| Firestore persistence      | Planned     |
+| TanStack Query data layer  | Planned     |
+| Vercel deployment          | Planned     |
+
 
 ## Design Direction
 
@@ -169,30 +192,66 @@ This project will include:
 * Reduced motion support
 * Screen-reader-friendly loading and empty states
 
+
 ## Testing Strategy
 
-The test suite will cover:
+This project includes a growing automated test suite focused on business logic, validation behavior, and user-visible component rendering.
 
-* Search utility behavior
-* Filter utility behavior
+Current test coverage includes:
+
+* Component search and filtering utilities
+* Component status, category, and platform formatting
+* Component slug lookup
 * Zod schema validation
+* Form helper utilities
+* Conversion between form values and component records
+* Component status badge rendering
 * Component card rendering
-* Form validation errors
-* Accessible labels and roles
-* Empty and loading states
+* Accessible text, links, headings, and status labels
 
-## CI/CD Plan
+Testing tools:
 
-GitHub Actions will run:
+| Tool                  | Purpose                         |
+| --------------------- | ------------------------------- |
+| Jest                  | Unit and component test runner  |
+| React Testing Library | User-centered component testing |
+| jest-dom              | DOM-specific assertions         |
+
+Run tests:
 
 ```bash
+npm run test
+```
+
+Run coverage:
+
+```bash
+npm run test:coverage
+```
+
+
+## CI/CD
+
+This project uses GitHub Actions to run an automated quality pipeline on pushes and pull requests targeting `main`.
+
+The CI workflow runs:
+
+```bash
+npm ci
 npm run lint
 npm run typecheck
-npm run test
+npm run test -- --runInBand
 npm run build
 ```
 
-The goal is to prove the project can maintain quality through an automated pipeline.
+The goal is to ensure that every change passes linting, TypeScript validation, automated tests, and a production build before being considered stable.
+
+CI workflow file:
+
+```txt
+.github/workflows/ci.yml
+```
+
 
 ## Local Setup
 
