@@ -43,8 +43,9 @@ export function ComponentReviewStep({
       </h3>
 
       <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
-        This preview is local for now. Later, this submit action will create a
-        Firestore document and invalidate the React Query cache.
+        This submit action now flows through a React Query mutation. In local preview
+mode it returns the validated record; when Firebase is configured, it saves to
+Firestore and updates the component cache.
       </p>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -83,8 +84,7 @@ export function ComponentReviewStep({
             Component record validated.
           </h4>
           <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-            {submittedRecord.name} is ready to be saved when Firestore is
-            connected.
+            {submittedRecord.name} has passed validation and the save mutation completed.
           </p>
         </Card>
       ) : null}

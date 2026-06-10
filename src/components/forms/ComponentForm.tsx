@@ -12,6 +12,7 @@ import { ComponentContractStep } from "@/components/forms/steps/ComponentContrac
 import { ComponentDecisionStep } from "@/components/forms/steps/ComponentDecisionStep";
 import { ComponentReviewStep } from "@/components/forms/steps/ComponentReviewStep";
 import type { ComponentRecord } from "@/features/components/component-types";
+import { useSaveComponentMutation } from "@/features/components/component-mutations";
 import {
   componentFormSchema,
   type ComponentFormValues,
@@ -87,6 +88,8 @@ export function ComponentForm() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [submittedRecord, setSubmittedRecord] =
     useState<ComponentRecord | null>(null);
+
+  const saveComponentMutation = useSaveComponentMutation();
 
   const defaultValues = useMemo(() => createDefaultComponentFormValues(), []);
 
@@ -182,9 +185,11 @@ export function ComponentForm() {
     setCurrentStepIndex((index) => Math.max(index - 1, 0));
   }
 
-  function handleValidSubmit(values: ComponentFormValues) {
+  async function handleValidSubmit(values: ComponentFormValues) {
     const record = createComponentRecordFromFormValues(values);
-    setSubmittedRecord(record);
+    const savedRecord = await saveComponentMutation.mutateAsync(record);
+
+    setSubmittedRecord(savedRecord);
   }
 
   return (
@@ -283,6 +288,20 @@ export function ComponentForm() {
         ) : null}
       </Card>
 
+      {saveComponentMutation.isError ? (
+        <Card
+          as="div"
+          className="border-rose-300/30 bg-rose-300/10 p-5"
+          role="alert"
+        >
+          <h3 className="font-black text-rose-100">Save failed.</h3>
+          <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+            The component record could not be saved. Check Firebase
+            configuration or try again.
+          </p>
+        </Card>
+      ) : null}
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Button
           type="button"
@@ -299,8 +318,11 @@ export function ComponentForm() {
               Continue
             </Button>
           ) : (
-            <Button type="submit" disabled={isSubmitting}>
-              Validate Record
+            <Button
+              type="submit"
+              disabled={isSubmitting || saveComponentMutation.isPending}
+            >
+              {saveComponentMutation.isPending ? "Saving..." : "Save Record"}
             </Button>
           )}
         </div>
