@@ -193,6 +193,157 @@ This project will include:
 * Screen-reader-friendly loading and empty states
 
 
+## Firebase, Auth, and Firestore Architecture
+
+Component Decision Log is structured to support Firebase Auth and Firestore persistence while still allowing the project to run safely in local development, CI, and portfolio review environments without private Firebase credentials.
+
+The app uses Firebase for:
+
+| Area                  | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| Firebase Auth         | Protecting create/edit workflows              |
+| Firestore             | Persisting component records                  |
+| Firebase Admin SDK    | Optional seed script for populating Firestore |
+| Environment variables | Keeping credentials out of source control     |
+
+The Firebase client is initialized lazily so the app does not crash during CI or local preview when Firebase environment variables are missing.
+
+### Local Preview Mode
+
+When Firebase environment variables are not configured, protected routes remain visible in a safe preview mode.
+
+For example:
+
+```txt
+/components/new
+```
+
+will show a local-preview notice and still render the form. This allows reviewers to inspect the full form experience without needing access to private Firebase credentials.
+
+When Firebase is configured, the same route becomes auth-gated and requires Google sign-in before users can manage component records.
+
+
+## Environment Variables
+
+Create a local environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Then add your Firebase web app values:
+
+```bash
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+```
+
+These values are intentionally prefixed with `NEXT_PUBLIC_` because they are used by the browser-side Firebase client.
+
+Private environment files are ignored by Git:
+
+```txt
+.env.local
+.env.seed.local
+```
+
+The repository only commits safe templates:
+
+```txt
+.env.example
+.env.seed.example
+```
+
+### Firestore Seed Environment
+
+To seed Firestore with the included mock component records, create:
+
+```bash
+cp .env.seed.example .env.seed.local
+```
+
+Then configure:
+
+```bash
+FIREBASE_PROJECT_ID=
+FIREBASE_SERVICE_ACCOUNT_BASE64=
+COMPONENT_SEED_COLLECTION=components
+```
+
+`FIREBASE_SERVICE_ACCOUNT_BASE64` should contain a base64-encoded Firebase service account JSON file. The raw service account file should never be committed.
+
+
+## Data Flow
+
+Component records currently move through a mock-to-Firestore bridge.
+
+```txt
+Component Registry UI
+→ TanStack Query
+→ Component query hooks
+→ Firestore when configured
+→ Mock data fallback when not configured
+```
+
+Form submission follows the same pattern:
+
+```txt
+Component Form
+→ React Hook Form
+→ Zod validation
+→ ComponentRecord creation
+→ TanStack Query mutation
+→ Firestore save when configured
+→ Local preview success when not configured
+→ Query cache update
+```
+
+This keeps UI components decoupled from the persistence layer. The registry and form do not need to know whether records are coming from mock data or Firestore.
+
+### Firestore Collection
+
+The primary Firestore collection is:
+
+```txt
+components
+```
+
+Each document stores a `ComponentRecord` with fields such as:
+
+```txt
+id
+name
+slug
+summary
+status
+category
+platform
+owner
+props
+state
+apiContract
+decisions
+relatedComponentIds
+accessibilityNotes
+createdAt
+updatedAt
+```
+
+### Seeding Firestore
+
+After Firebase Admin credentials are configured, seed Firestore with:
+
+```bash
+npm run seed:components
+```
+
+The seed script writes the current mock component records into the configured Firestore collection using merge behavior, so existing documents with the same IDs can be updated safely.
+
+
 ## Testing Strategy
 
 This project includes a growing automated test suite focused on business logic, validation behavior, and user-visible component rendering.
