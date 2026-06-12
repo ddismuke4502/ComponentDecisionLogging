@@ -2,9 +2,58 @@
 
 [![CI](https://github.com/ddismuke4502/ComponentDecisionLogging/actions/workflows/ci.yml/badge.svg)](https://github.com/ddismuke4502/ComponentDecisionLogging/actions/workflows/ci.yml)
 
-A portfolio-grade frontend engineering project for documenting reusable UI component decisions across frontend and mobile engineering teams.
+## Live Demo
 
-Component Decision Log helps teams track component metadata, ownership, status, props, state, API contracts, related components, accessibility notes, and the reasoning behind component-level decisions.
+**Production:** [component-decision-logging.vercel.app](https://component-decision-logging.vercel.app)
+
+Component Decision Log is deployed on Vercel from the `main` branch. The production deployment currently runs in safe preview mode without Firebase environment variables, which allows reviewers to explore the registry, component detail pages, protected form shell, validation flow, and local mock-backed data architecture without private credentials.
+
+
+## Portfolio Case Study
+
+Component Decision Log is a frontend architecture portfolio project designed to show how reusable UI components can be documented, governed, reviewed, and evolved across engineering teams.
+
+The project demonstrates:
+
+* Typed domain modeling for component records, props, state, API contracts, accessibility notes, and architecture decisions
+* Searchable and filterable component registry
+* Component detail routes with decision history and contract documentation
+* Multi-step component creation form
+* React Hook Form and Zod validation
+* TanStack Query query and mutation architecture
+* Mock-to-Firestore data bridge
+* Firebase Auth gate shell with safe local preview behavior
+* Firestore seed script structure
+* Jest and React Testing Library coverage
+* GitHub Actions CI for linting, typechecking, testing, and production builds
+* GSAP reveal animations with reduced-motion support
+* Mobile-first responsive layouts and accessibility-focused UI primitives
+
+The goal is to present the kind of frontend engineering maturity expected in production design-system, platform, and mobile/web architecture work.
+
+
+## Production Status
+
+| Area                                | Status             |
+| ----------------------------------- | ------------------ |
+| Vercel production deployment        | Complete           |
+| GitHub Actions CI                   | Complete           |
+| Mock-backed component registry      | Complete           |
+| Component detail routes             | Complete           |
+| Multi-step component form           | Complete           |
+| React Query data layer              | Complete           |
+| Firebase client setup               | Complete           |
+| Firebase Auth shell                 | Complete           |
+| Firestore bridge                    | Complete           |
+| Firestore seed script               | Complete           |
+| GSAP animation layer                | Complete           |
+| Mobile/accessibility pass           | Complete           |
+| Live Firebase project configuration | Deferred           |
+| Edit existing component workflow    | Future enhancement |
+| Component analytics dashboard       | Future enhancement |
+
+The current production deployment intentionally uses mock-backed data so the application remains reviewable without exposing private Firebase credentials. Firebase and Firestore integration points are already structured and can be enabled by adding the appropriate environment variables.
+
 
 ## Project Purpose
 
@@ -24,6 +73,22 @@ The goal is to demonstrate production-minded frontend engineering through:
 * Automated testing
 * GitHub Actions CI
 * Professional documentation
+
+
+## Screenshots
+
+> Screenshots will be added after the final production visual pass.
+
+Planned screenshots:
+
+| View | Purpose |
+| --- | --- |
+| Command Center | Shows the project concept and visual direction |
+| Component Registry | Shows search, filtering, status, and component governance |
+| Component Detail Page | Shows props, state, API contracts, decisions, and accessibility notes |
+| New Component Form | Shows the multi-step creation and validation workflow |
+| Local Preview Auth Gate | Shows safe Firebase fallback behavior |
+
 
 ## Core Features
 
@@ -119,6 +184,19 @@ This project is intentionally structured to show frontend engineering discipline
 * Validate form data with schemas
 * Use testable utility functions for filtering/search behavior
 * Treat the README as a living architecture document
+
+## Technical Highlights
+
+### Data Architecture
+
+The registry reads through TanStack Query hooks rather than importing data directly into UI components. This keeps the rendering layer decoupled from the persistence layer.
+
+```txt
+Registry UI
+→ TanStack Query
+→ Component query hooks
+→ Firestore when configured
+→ Mock data fallback when not configured
 
 ## Planned Folder Structure
 
