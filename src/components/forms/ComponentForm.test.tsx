@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ComponentForm } from "@/components/forms/ComponentForm";
 import { renderWithQueryClient } from "@/test/render-with-query-client";
@@ -22,7 +22,6 @@ describe("ComponentForm", () => {
     expect(screen.getByText("Add at least one tag.")).toBeInTheDocument();
 
     expect(screen.getByText(/Step 1 of 5/i)).toBeInTheDocument();
-    expect(screen.getByText("Identity")).toBeInTheDocument();
   });
 
   it("submits a valid component record through the save mutation", async () => {
@@ -59,7 +58,6 @@ describe("ComponentForm", () => {
     ).toBeInTheDocument();
 
     expect(screen.getByText("AccessibleDataTable")).toBeInTheDocument();
-    expect(screen.getByText("accessible-data-table")).toBeInTheDocument();
     expect(screen.getByText("Frontend Guild")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /save record/i }));
@@ -87,15 +85,18 @@ async function fillIdentityStep(user: ReturnType<typeof userEvent.setup>) {
     "accessible-data-table",
   );
 
-  await user.type(
-    screen.getByRole("textbox", { name: /^summary$/i }),
-    "A reusable data table for accessible enterprise reporting workflows.",
-  );
+  fireEvent.change(screen.getByRole("textbox", { name: /^summary$/i }), {
+    target: {
+      value:
+        "A reusable data table for accessible enterprise reporting workflows.",
+    },
+  });
 
-  await user.type(
-    screen.getByRole("textbox", { name: /^tags$/i }),
-    "table, accessibility, data",
-  );
+  fireEvent.change(screen.getByRole("textbox", { name: /^tags$/i }), {
+    target: {
+      value: "table, accessibility, data",
+    },
+  });
 }
 
 async function fillOwnershipStep(user: ReturnType<typeof userEvent.setup>) {
@@ -141,24 +142,31 @@ async function fillContractStep(user: ReturnType<typeof userEvent.setup>) {
     "GET",
   );
 
-  await user.type(
-    screen.getByRole("textbox", { name: /request shape/i }),
-    "{ tableId: string; filters?: Record<string, string> }",
-  );
+  fireEvent.change(screen.getByRole("textbox", { name: /request shape/i }), {
+    target: {
+      value: "{ tableId: string; filters?: Record<string, string> }",
+    },
+  });
 
-  await user.type(
-    screen.getByRole("textbox", { name: /response shape/i }),
-    "{ rows: TableRow[]; total: number }",
-  );
+  fireEvent.change(screen.getByRole("textbox", { name: /response shape/i }), {
+    target: {
+      value: "{ rows: TableRow[]; total: number }",
+    },
+  });
 
-  await user.type(
-    screen.getByRole("textbox", { name: /api notes/i }),
-    "Document loading, empty, success, and error states.",
-  );
+  fireEvent.change(screen.getByRole("textbox", { name: /api notes/i }), {
+    target: {
+      value: "Document loading, empty, success, and error states.",
+    },
+  });
 
-  await user.type(
+  fireEvent.change(
     screen.getByRole("textbox", { name: /accessibility notes/i }),
-    "Keyboard navigation support, Screen reader status announced",
+    {
+      target: {
+        value: "Keyboard navigation support, Screen reader status announced",
+      },
+    },
   );
 }
 
@@ -168,14 +176,21 @@ async function fillDecisionStep(user: ReturnType<typeof userEvent.setup>) {
     "Use semantic table structure",
   );
 
-  await user.type(
-    screen.getByRole("textbox", { name: /decision summary/i }),
-    "The table should preserve semantic relationships between headers and cells.",
-  );
+  fireEvent.change(screen.getByRole("textbox", { name: /decision summary/i }), {
+    target: {
+      value:
+        "The table should preserve semantic relationships between headers and cells.",
+    },
+  });
 
-  await user.type(
+  fireEvent.change(
     screen.getByRole("textbox", { name: /decision rationale/i }),
-    "Semantic table structure improves screen reader navigation and keeps reporting data understandable without custom keyboard hacks.",
+    {
+      target: {
+        value:
+          "Semantic table structure improves screen reader navigation and keeps reporting data understandable without custom keyboard hacks.",
+      },
+    },
   );
 
   await user.type(

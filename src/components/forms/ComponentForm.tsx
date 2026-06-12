@@ -151,10 +151,6 @@ export function ComponentForm() {
     name: "summary",
   });
 
-  const previewValues = useWatch({
-    control,
-  });
-
   function updateSlugFromName() {
     if (!watchedSlug?.trim()) {
       setValue("slug", createSlug(watchedName), {
