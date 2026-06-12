@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { ComponentRegistryClient } from "@/components/component-log/ComponentRegistryClient";
 import { mockComponents } from "@/data/mock-components";
+import { GsapRevealScope } from "@/components/animation/GsapRevealScope";
 import {
   formatComponentStatus,
   getUniqueOwnerTeams,
@@ -52,8 +53,11 @@ export default function ComponentsPage() {
       id="main-content"
       className="min-h-screen px-4 py-6 text-[var(--foreground)] sm:px-6 lg:px-8"
     >
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-        <header className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl sm:p-8">
+      <GsapRevealScope className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+        <header
+          data-gsap-reveal
+          className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl sm:p-8"
+        >
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <Link
@@ -105,7 +109,12 @@ export default function ComponentsPage() {
           </h2>
 
           {registryStats.map((stat) => (
-            <Card key={stat.label} as="article" className="p-5">
+            <Card
+              data-gsap-reveal
+              key={stat.label}
+              as="article"
+              className="p-5"
+            >
               <p className="text-3xl font-black text-[var(--turquoise-soft)]">
                 {stat.value}
               </p>
@@ -118,6 +127,7 @@ export default function ComponentsPage() {
         </section>
 
         <section
+          data-gsap-reveal
           aria-labelledby="status-overview-title"
           className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-5 backdrop-blur-xl sm:p-6"
         >
@@ -158,7 +168,7 @@ export default function ComponentsPage() {
         </section>
 
         <ComponentRegistryClient initialComponents={sortedComponents} />
-      </div>
+      </GsapRevealScope>
     </main>
   );
 }

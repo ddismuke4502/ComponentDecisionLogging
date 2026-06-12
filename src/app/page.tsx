@@ -1,3 +1,5 @@
+import { GsapRevealScope } from "@/components/animation/GsapRevealScope";
+
 const topMetrics = [
   { label: "Records", value: "24" },
   { label: "Decisions", value: "78" },
@@ -125,9 +127,12 @@ export default function Home() {
           <div className="h-16 w-px bg-gradient-to-b from-transparent via-[var(--turquoise)] to-transparent" />
         </aside>
 
-        <div className="grid flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <GsapRevealScope className="grid flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
           <div className="grid gap-4">
-            <header className="rounded-[2rem] border border-[var(--border)] bg-black/35 px-5 py-4 backdrop-blur-xl sm:px-6">
+            <header
+              data-gsap-reveal
+              className="rounded-[2rem] border border-[var(--border)] bg-black/35 px-5 py-4 backdrop-blur-xl sm:px-6"
+            >
               <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.42em] text-[var(--turquoise)]">
@@ -174,7 +179,10 @@ export default function Home() {
               id="overview"
               className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]"
             >
-              <article className="rounded-[2rem] border border-[var(--border)] bg-[var(--background-elevated)]/75 p-6 backdrop-blur-xl sm:p-8">
+              <article
+                data-gsap-reveal
+                className="rounded-[2rem] border border-[var(--border)] bg-[var(--background-elevated)]/75 p-6 backdrop-blur-xl sm:p-8"
+              >
                 <p className="inline-flex rounded-full border border-purple-300/30 bg-purple-300/10 px-4 py-2 text-sm font-bold text-[var(--turquoise-soft)]">
                   Engineering memory layer
                 </p>
@@ -230,7 +238,10 @@ export default function Home() {
                 </form>
               </article>
 
-              <article className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl sm:p-8">
+              <article
+                data-gsap-reveal
+                className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl sm:p-8"
+              >
                 <PanelHeader
                   eyebrow="What this proves"
                   title="Portfolio-grade frontend engineering"
@@ -255,6 +266,7 @@ export default function Home() {
             </section>
 
             <section
+              data-gsap-reveal
               id="graph"
               className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl sm:p-8"
             >
@@ -443,7 +455,7 @@ export default function Home() {
               </p>
             </div>
           </aside>
-        </div>
+        </GsapRevealScope>
       </section>
     </main>
   );

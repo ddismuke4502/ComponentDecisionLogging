@@ -13,6 +13,7 @@ import { ComponentDecisionStep } from "@/components/forms/steps/ComponentDecisio
 import { ComponentReviewStep } from "@/components/forms/steps/ComponentReviewStep";
 import type { ComponentRecord } from "@/features/components/component-types";
 import { useSaveComponentMutation } from "@/features/components/component-mutations";
+import { GsapRevealScope } from "@/components/animation/GsapRevealScope";
 import {
   componentFormSchema,
   type ComponentFormValues,
@@ -246,47 +247,49 @@ export function ComponentForm() {
         </ol>
       </Card>
 
-      <Card as="section" className="p-5 sm:p-6">
-        {currentStep.id === "identity" ? (
-          <ComponentIdentityStep
-            register={register}
-            errors={errors}
-            watchedTags={watchedTags ?? []}
-            updateTags={updateTags}
-            updateSlugFromName={updateSlugFromName}
-          />
-        ) : null}
+      <GsapRevealScope animationKey={currentStep.id}>
+        <Card data-gsap-reveal as="section" className="p-5 sm:p-6">
+          {currentStep.id === "identity" ? (
+            <ComponentIdentityStep
+              register={register}
+              errors={errors}
+              watchedTags={watchedTags ?? []}
+              updateTags={updateTags}
+              updateSlugFromName={updateSlugFromName}
+            />
+          ) : null}
 
-        {currentStep.id === "ownership" ? (
-          <ComponentOwnershipStep register={register} errors={errors} />
-        ) : null}
+          {currentStep.id === "ownership" ? (
+            <ComponentOwnershipStep register={register} errors={errors} />
+          ) : null}
 
-        {currentStep.id === "contract" ? (
-          <ComponentContractStep
-            control={control}
-            register={register}
-            setValue={setValue}
-            errors={errors}
-          />
-        ) : null}
+          {currentStep.id === "contract" ? (
+            <ComponentContractStep
+              control={control}
+              register={register}
+              setValue={setValue}
+              errors={errors}
+            />
+          ) : null}
 
-        {currentStep.id === "decision" ? (
-          <ComponentDecisionStep register={register} errors={errors} />
-        ) : null}
+          {currentStep.id === "decision" ? (
+            <ComponentDecisionStep register={register} errors={errors} />
+          ) : null}
 
-        {currentStep.id === "review" ? (
-          <ComponentReviewStep
-            watchedName={watchedName ?? ""}
-            watchedSlug={watchedSlug ?? ""}
-            watchedOwnerTeam={watchedOwnerTeam ?? ""}
-            watchedStatus={watchedStatus}
-            watchedCategory={watchedCategory}
-            watchedPlatform={watchedPlatform}
-            watchedSummary={watchedSummary ?? ""}
-            submittedRecord={submittedRecord}
-          />
-        ) : null}
-      </Card>
+          {currentStep.id === "review" ? (
+            <ComponentReviewStep
+              watchedName={watchedName ?? ""}
+              watchedSlug={watchedSlug ?? ""}
+              watchedOwnerTeam={watchedOwnerTeam ?? ""}
+              watchedStatus={watchedStatus}
+              watchedCategory={watchedCategory}
+              watchedPlatform={watchedPlatform}
+              watchedSummary={watchedSummary ?? ""}
+              submittedRecord={submittedRecord}
+            />
+          ) : null}
+        </Card>
+      </GsapRevealScope>
 
       {saveComponentMutation.isError ? (
         <Card

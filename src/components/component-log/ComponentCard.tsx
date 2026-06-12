@@ -19,6 +19,7 @@ export function ComponentCard({ component, href }: ComponentCardProps) {
 
   return (
     <Card
+      data-gsap-reveal
       as="article"
       variant="interactive"
       aria-labelledby={titleId}
