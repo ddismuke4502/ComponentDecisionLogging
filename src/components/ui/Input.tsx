@@ -31,9 +31,8 @@ export function Input({
         aria-invalid={error ? "true" : "false"}
         aria-describedby={describedBy || undefined}
         className={cn(
-          "mt-2 min-h-12 w-full rounded-2xl border bg-black/35 px-4 text-sm text-[var(--foreground)] outline-none transition",
-          "placeholder:text-[var(--muted-strong)]",
-          "focus:border-[var(--turquoise)]",
+          "min-h-11 w-full rounded-2xl border border-[var(--border)] bg-black/35 px-4 text-sm text-[var(--foreground)] outline-none transition",
+          "placeholder:text-[var(--muted)] focus:border-[var(--turquoise)] focus:ring-2 focus:ring-[var(--turquoise)]/30 disabled:cursor-not-allowed disabled:opacity-50",
           error
             ? "border-[var(--danger)]"
             : "border-[var(--border)]",

@@ -24,7 +24,7 @@ export function ComponentCard({ component, href }: ComponentCardProps) {
       variant="interactive"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      className="relative flex h-full flex-col gap-5"
+      className="h-full p-5 sm:p-6"
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
@@ -32,7 +32,7 @@ export function ComponentCard({ component, href }: ComponentCardProps) {
             {formatComponentCategory(component.category)}
           </p>
 
-          <h3 id={titleId} className="mt-2 text-xl font-black">
+          <h3 id={titleId} className="text-xl font-black tracking-[-0.03em]">
             <Link
               href={componentHref}
               className="rounded-lg focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]"
@@ -45,7 +45,7 @@ export function ComponentCard({ component, href }: ComponentCardProps) {
         <ComponentStatusBadge status={component.status} />
       </div>
 
-      <p id={descriptionId} className="text-sm leading-7 text-[var(--muted)]">
+      <p id={descriptionId} className="mt-3 text-sm leading-7 text-[var(--muted)]">
         {component.summary}
       </p>
 

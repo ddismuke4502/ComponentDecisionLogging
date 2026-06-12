@@ -37,8 +37,8 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "inline-flex items-center justify-center rounded-2xl font-black transition motion-safe:hover:scale-[1.02] disabled:pointer-events-none disabled:opacity-50",
-        "focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]",
+        "inline-flex min-h-11 items-center justify-center rounded-2xl px-5 text-sm font-black transition disabled:pointer-events-none disabled:opacity-50",
+        "focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[var(--turquoise)]",
         variantClasses[variant],
         sizeClasses[size],
         className,

@@ -194,7 +194,11 @@ export function ComponentForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(handleValidSubmit)} className="space-y-6">
+    <form
+      aria-label="Create component record"
+      className="space-y-6"
+      onSubmit={handleSubmit(handleValidSubmit)}
+    >
       <Card as="section" aria-labelledby="form-progress-title" className="p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -215,7 +219,10 @@ export function ComponentForm() {
           </p>
         </div>
 
-        <ol className="mt-6 grid gap-3 md:grid-cols-5">
+        <ol
+          className="grid gap-3 sm:grid-cols-5"
+          aria-label="Component form steps"
+        >
           {formSteps.map((step, index) => {
             const isActive = index === currentStepIndex;
             const isComplete = index < currentStepIndex;
@@ -232,7 +239,7 @@ export function ComponentForm() {
                         ? "border-purple-300/30 bg-purple-300/10"
                         : "border-[var(--border)] bg-white/[0.03]"
                   }`}
-                  aria-current={isActive ? "step" : undefined}
+                  aria-current={step.id === currentStep.id ? "step" : undefined}
                 >
                   <span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--muted)]">
                     Step {index + 1}

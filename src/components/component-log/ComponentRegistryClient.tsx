@@ -125,7 +125,7 @@ export function ComponentRegistryClient({
           </div>
 
           <p
-            className="text-sm text-[var(--muted)]"
+            className="text-sm font-bold text-[var(--muted)]"
             aria-live="polite"
             aria-atomic="true"
           >
@@ -135,7 +135,7 @@ export function ComponentRegistryClient({
         </div>
 
         <Card data-gsap-reveal as="div" className="mt-6 p-4 sm:p-5">
-          <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_auto] lg:items-end">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <div>
               <label
                 htmlFor="component-search"
