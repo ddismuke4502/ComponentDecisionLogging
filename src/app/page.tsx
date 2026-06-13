@@ -31,23 +31,27 @@ const activityItems = [
 const relationshipNodes = [
   {
     name: "PrimaryActionButton",
+    label: "Primary Button",
     sublabel: "Approved",
-    className: "left-[10%] top-[16%]",
+    className: "left-4 top-8 sm:left-[8%] sm:top-[16%]",
   },
   {
     name: "SearchCommandPanel",
+    label: "Search Panel",
     sublabel: "In Review",
-    className: "right-[10%] top-[20%]",
+    className: "right-4 top-24 sm:right-[8%] sm:top-[24%]",
   },
   {
     name: "FormValidationMessage",
+    label: "Validation Message",
     sublabel: "Approved",
-    className: "left-[18%] bottom-[16%]",
+    className: "left-4 bottom-24 sm:left-[10%] sm:bottom-[18%]",
   },
   {
     name: "ComponentHealthCard",
+    label: "Health Card",
     sublabel: "Proposed",
-    className: "right-[16%] bottom-[18%]",
+    className: "right-4 bottom-8 sm:right-[10%] sm:bottom-[16%]",
   },
 ];
 
@@ -144,12 +148,15 @@ export default function Home() {
                   </p>
                 </div>
 
-                <nav aria-label="Primary navigation">
-                  <ul className="flex flex-wrap gap-2 text-sm font-semibold text-[var(--muted)]">
+                <nav
+                  aria-label="Primary navigation"
+                  className="w-full lg:w-auto"
+                >
+                  <ul className="flex max-w-full flex-wrap gap-2 text-sm font-semibold text-[var(--muted)] lg:justify-end">
                     <li>
                       <a
                         href="#overview"
-                        className="rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                        className="inline-flex min-h-10 items-center whitespace-nowrap rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
                       >
                         Overview
                       </a>
@@ -157,7 +164,7 @@ export default function Home() {
                     <li>
                       <a
                         href="#graph"
-                        className="rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                        className="inline-flex min-h-10 items-center whitespace-nowrap rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
                       >
                         Relationship Map
                       </a>
@@ -165,7 +172,7 @@ export default function Home() {
                     <li>
                       <a
                         href="#system-panels"
-                        className="rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                        className="inline-flex min-h-10 items-center whitespace-nowrap rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
                       >
                         System Panels
                       </a>
@@ -283,13 +290,13 @@ export default function Home() {
               </div>
 
               <div className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-                <div className="relative min-h-[28rem] overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--background-card)]/70 p-6">
+                <div className="relative min-h-[34rem] overflow-hidden rounded-[2rem] border border-[var(--border)] bg-[var(--background-card)]/70 p-4 sm:p-6 lg:min-h-[32rem]">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(45,212,191,0.16),transparent_18rem)]" />
                   <div className="absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full border border-teal-300/20" />
                   <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full border border-purple-300/15" />
                   <div className="absolute left-1/2 top-1/2 h-[24rem] w-[24rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-teal-300/10" />
 
-                  <div className="absolute left-1/2 top-1/2 z-10 flex h-40 w-40 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[2rem] border border-teal-300/35 bg-teal-300/10 text-center shadow-2xl shadow-teal-950/30">
+                  <div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[1.75rem] border border-teal-300/35 bg-teal-300/10 text-center shadow-2xl shadow-teal-950/30 sm:h-40 sm:w-40 sm:rounded-[2rem]">
                     <span className="text-5xl font-black text-[var(--turquoise-soft)]">
                       24
                     </span>
@@ -301,10 +308,11 @@ export default function Home() {
                   {relationshipNodes.map((node) => (
                     <article
                       key={node.name}
-                      className={`absolute z-20 w-48 rounded-2xl border border-[var(--border)] bg-black/70 px-4 py-3 shadow-2xl shadow-black/30 ${node.className}`}
+                      aria-label={`${node.name}: ${node.sublabel}`}
+                      className={`absolute z-20 w-36 rounded-2xl border border-[var(--border)] bg-black/75 px-3 py-3 shadow-2xl shadow-black/30 backdrop-blur-md sm:w-44 sm:px-4 ${node.className}`}
                     >
-                      <h3 className="truncate text-sm font-black">
-                        {node.name}
+                      <h3 className="truncate text-xs font-black sm:text-sm">
+                        {node.label}
                       </h3>
                       <p className="mt-1 text-xs text-[var(--muted)]">
                         {node.sublabel}
@@ -331,7 +339,7 @@ export default function Home() {
               </div>
             </section>
 
-            <section id="system-panels" className="grid gap-4 lg:grid-cols-3">
+            <section id="system-panels" className="grid gap-4 xl:grid-cols-3">
               <article className="rounded-[2rem] border border-[var(--border)] bg-black/35 p-6 backdrop-blur-xl">
                 <PanelHeader
                   eyebrow="Registry Preview"
@@ -346,14 +354,16 @@ export default function Home() {
                       className="rounded-2xl border border-[var(--border)] bg-white/[0.03] p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <h3 className="text-sm font-black">{item.name}</h3>
-                          <p className="mt-1 text-xs text-[var(--muted)]">
+                        <div className="min-w-0 flex-1">
+                          <h3 className="truncate text-sm font-black">
+                            {item.name}
+                          </h3>
+                          <p className="mt-1 truncate text-xs text-[var(--muted)]">
                             {item.meta}
                           </p>
                         </div>
 
-                        <span className="rounded-full border border-teal-300/30 bg-teal-300/10 px-3 py-1 text-[0.7rem] font-bold text-[var(--turquoise-soft)]">
+                        <span className="shrink-0 rounded-full border border-teal-300/30 bg-teal-300/10 px-3 py-1 text-center text-[0.68rem] font-bold leading-tight text-[var(--turquoise-soft)]">
                           {item.status}
                         </span>
                       </div>
@@ -475,7 +485,9 @@ function PanelHeader({
       <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--turquoise)]">
         {eyebrow}
       </p>
-      <h2 className="mt-3 text-2xl font-black">{title}</h2>
+      <h2 className="mt-3 break-words text-2xl font-black leading-tight">
+        {title}
+      </h2>
       <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
         {description}
       </p>
