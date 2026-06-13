@@ -11,7 +11,8 @@ type AuthGateProps = {
 };
 
 export function AuthGate({ children }: AuthGateProps) {
-  const { user, isLoading, isConfigured, signInWithGoogle } = useAuth();
+  const { user, isAdmin, isLoading, isConfigured, signInWithGoogle, signOutUser } =
+  useAuth();
 
   if (!isConfigured) {
     return (
@@ -82,6 +83,38 @@ export function AuthGate({ children }: AuthGateProps) {
       </Card>
     );
   }
+
+  if (!isAdmin) {
+  return (
+    <Card as="section" className="p-6" aria-labelledby="admin-required-title">
+      <p className="text-xs font-black uppercase tracking-[0.35em] text-[var(--turquoise)]">
+        Admin Access Required
+      </p>
+
+      <h2 id="admin-required-title" className="mt-3 text-2xl font-black">
+        This workflow is restricted to project maintainers.
+      </h2>
+
+      <p className="mt-3 text-sm leading-7 text-[var(--muted)]">
+        You are signed in, but this email is not on the admin allowlist for
+        creating or editing component records.
+      </p>
+
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+        <Button type="button" variant="secondary" onClick={signOutUser}>
+          Sign out
+        </Button>
+
+        <Link
+          href="/components"
+          className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-[var(--border)] px-5 text-sm font-black text-[var(--turquoise-soft)] transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+        >
+          Back to Registry
+        </Link>
+      </div>
+    </Card>
+  );
+}
 
   return children;
 }

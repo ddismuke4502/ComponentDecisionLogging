@@ -17,11 +17,13 @@ import {
 } from "react";
 import { getFirebaseAuth } from "@/lib/firebase/auth";
 import { isFirebaseConfigured } from "@/lib/firebase/client";
+import { isAdminUser } from "@/features/auth/auth-utils";
 
 type AuthContextValue = {
   user: User | null;
   isLoading: boolean;
   isConfigured: boolean;
+  isAdmin: boolean;
   signInWithGoogle: () => Promise<void>;
   signOutUser: () => Promise<void>;
 };
@@ -52,33 +54,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
 }, []);
 
   const value = useMemo<AuthContextValue>(
-    () => ({
-      user,
-      isLoading,
-      isConfigured: isFirebaseConfigured,
-      signInWithGoogle: async () => {
-        if (!isFirebaseConfigured) {
-          throw new Error(
-            "Firebase is not configured. Add Firebase values to .env.local before signing in.",
-          );
-        }
+  () => ({
+    user,
+    isLoading,
+    isConfigured: isFirebaseConfigured,
+    isAdmin: isAdminUser(user),
+    signInWithGoogle: async () => {
+      if (!isFirebaseConfigured) {
+        throw new Error(
+          "Firebase is not configured. Add Firebase values to .env.local before signing in.",
+        );
+      }
 
-        const auth = getFirebaseAuth();
-        const provider = new GoogleAuthProvider();
+      const auth = getFirebaseAuth();
+      const provider = new GoogleAuthProvider();
 
-        await signInWithPopup(auth, provider);
-      },
-      signOutUser: async () => {
-        if (!isFirebaseConfigured) {
-          setUser(null);
-          return;
-        }
+      await signInWithPopup(auth, provider);
+    },
+    signOutUser: async () => {
+      if (!isFirebaseConfigured) {
+        setUser(null);
+        return;
+      }
 
-        await signOut(getFirebaseAuth());
-      },
-    }),
-    [user, isLoading],
-  );
+      await signOut(getFirebaseAuth());
+    },
+  }),
+  [user, isLoading],
+);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

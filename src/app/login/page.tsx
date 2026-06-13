@@ -6,8 +6,14 @@ import { Card } from "@/components/ui/Card";
 import { useAuth } from "@/features/auth/auth-context";
 
 export default function LoginPage() {
-  const { user, isLoading, isConfigured, signInWithGoogle, signOutUser } =
-    useAuth();
+  const {
+    user,
+    isAdmin,
+    isLoading,
+    isConfigured,
+    signInWithGoogle,
+    signOutUser,
+  } = useAuth();
 
   return (
     <main
@@ -61,7 +67,31 @@ export default function LoginPage() {
                 You are signed in.
               </h2>
               <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
-                Signed in as {user.email ?? user.displayName ?? "authenticated user"}.
+                Signed in as{" "}
+                {user.email ?? user.displayName ?? "authenticated user"}.
+              </p>
+            </div>
+          ) : null}
+
+          {user && !isAdmin ? (
+            <div className="mt-4 rounded-3xl border border-amber-300/30 bg-amber-300/10 p-5">
+              <h2 className="font-black text-amber-100">
+                Signed in, but not an admin.
+              </h2>
+              <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                This account can view the registry, but it cannot create or edit
+                component records.
+              </p>
+            </div>
+          ) : null}
+
+          {user && isAdmin ? (
+            <div className="mt-4 rounded-3xl border border-[var(--border-strong)] bg-[var(--turquoise)]/10 p-5">
+              <h2 className="font-black text-[var(--turquoise-soft)]">
+                Admin access confirmed.
+              </h2>
+              <p className="mt-2 text-sm leading-7 text-[var(--muted)]">
+                This account can manage component records.
               </p>
             </div>
           ) : null}
