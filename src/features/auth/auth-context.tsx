@@ -15,15 +15,17 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { isAdminUser } from "@/features/auth/auth-utils";
 import { getFirebaseAuth } from "@/lib/firebase/auth";
 import { isFirebaseConfigured } from "@/lib/firebase/client";
-import { isAdminUser } from "@/features/auth/auth-utils";
 
 type AuthContextValue = {
   user: User | null;
   isLoading: boolean;
   isConfigured: boolean;
   isAdmin: boolean;
+  authError: string | null;
+  clearAuthError: () => void;
   signInWithGoogle: () => Promise<void>;
   signOutUser: () => Promise<void>;
 };
@@ -37,51 +39,68 @@ type AuthProviderProps = {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(isFirebaseConfigured);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-  if (!isFirebaseConfigured) {
-    return;
-  }
+    if (!isFirebaseConfigured) {
+      return;
+    }
 
-  const auth = getFirebaseAuth();
+    const auth = getFirebaseAuth();
 
-  const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
-    setUser(nextUser);
-    setIsLoading(false);
-  });
+    const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser);
+      setIsLoading(false);
+    });
 
-  return unsubscribe;
-}, []);
+    return unsubscribe;
+  }, []);
 
   const value = useMemo<AuthContextValue>(
-  () => ({
-    user,
-    isLoading,
-    isConfigured: isFirebaseConfigured,
-    isAdmin: isAdminUser(user),
-    signInWithGoogle: async () => {
-      if (!isFirebaseConfigured) {
-        throw new Error(
-          "Firebase is not configured. Add Firebase values to .env.local before signing in.",
-        );
-      }
+    () => ({
+      user,
+      isLoading,
+      isConfigured: isFirebaseConfigured,
+      isAdmin: isAdminUser(user),
+      authError,
+      clearAuthError: () => setAuthError(null),
+      signInWithGoogle: async () => {
+        setAuthError(null);
 
-      const auth = getFirebaseAuth();
-      const provider = new GoogleAuthProvider();
+        if (!isFirebaseConfigured) {
+          setAuthError(
+            "Firebase is not configured. Add Firebase values to .env.local before signing in.",
+          );
+          return;
+        }
 
-      await signInWithPopup(auth, provider);
-    },
-    signOutUser: async () => {
-      if (!isFirebaseConfigured) {
-        setUser(null);
-        return;
-      }
+        try {
+          const auth = getFirebaseAuth();
+          const provider = new GoogleAuthProvider();
 
-      await signOut(getFirebaseAuth());
-    },
-  }),
-  [user, isLoading],
-);
+          await signInWithPopup(auth, provider);
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : "Google sign-in failed unexpectedly.";
+
+          setAuthError(message);
+        }
+      },
+      signOutUser: async () => {
+        setAuthError(null);
+
+        if (!isFirebaseConfigured) {
+          setUser(null);
+          return;
+        }
+
+        await signOut(getFirebaseAuth());
+      },
+    }),
+    [user, isLoading, authError],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

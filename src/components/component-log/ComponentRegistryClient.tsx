@@ -24,6 +24,7 @@ import {
 
 type ComponentRegistryClientProps = {
   initialComponents: ComponentRecord[];
+  initialFilters?: ComponentFilters;
 };
 
 const statusOptions = [
@@ -33,7 +34,7 @@ const statusOptions = [
   "deprecated",
 ] as const satisfies ComponentStatus[];
 
-const initialFilters: ComponentFilters = {
+const defaultFilters: ComponentFilters = {
   search: "",
   status: "all",
   category: "all",
@@ -42,6 +43,7 @@ const initialFilters: ComponentFilters = {
 
 export function ComponentRegistryClient({
   initialComponents,
+  initialFilters,
 }: ComponentRegistryClientProps) {
   const {
     data: components = [],
@@ -49,7 +51,10 @@ export function ComponentRegistryClient({
     isFetching,
   } = useComponentsQuery(initialComponents);
 
-  const [filters, setFilters] = useState<ComponentFilters>(initialFilters);
+  const [filters, setFilters] = useState<ComponentFilters>({
+    ...defaultFilters,
+    ...initialFilters,
+  });
 
   const ownerTeams = useMemo(
     () => getUniqueOwnerTeams(components),
@@ -102,7 +107,7 @@ export function ComponentRegistryClient({
   }
 
   function resetFilters() {
-    setFilters(initialFilters);
+    setFilters(defaultFilters);
   }
 
   return (

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { GsapRevealScope } from "@/components/animation/GsapRevealScope";
 
 const topMetrics = [
@@ -177,6 +178,22 @@ export default function Home() {
                         System Panels
                       </a>
                     </li>
+                    <li>
+                      <Link
+                        href="/login"
+                        className="inline-flex min-h-10 items-center whitespace-nowrap rounded-full border border-[var(--border)] px-4 py-2 transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                      >
+                        Sign In
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/components/new"
+                        className="inline-flex min-h-10 items-center whitespace-nowrap rounded-full border border-teal-300/30 bg-teal-300/10 px-4 py-2 font-black text-[var(--turquoise-soft)] transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                      >
+                        Add Component
+                      </Link>
+                    </li>
                   </ul>
                 </nav>
               </div>
@@ -204,6 +221,29 @@ export default function Home() {
                   decisions were made.
                 </p>
 
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Link
+                    href="/components"
+                    className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-[var(--turquoise)] px-5 text-sm font-black text-slate-950 transition hover:scale-[1.02]"
+                  >
+                    Open Registry
+                  </Link>
+
+                  <Link
+                    href="/login"
+                    className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[var(--border)] px-5 text-sm font-black text-[var(--turquoise-soft)] transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                  >
+                    Sign In
+                  </Link>
+
+                  <Link
+                    href="/components/new"
+                    className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-teal-300/30 bg-teal-300/10 px-5 text-sm font-black text-[var(--turquoise-soft)] transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+                  >
+                    Create Component
+                  </Link>
+                </div>
+
                 <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                   {topMetrics.map((metric) => (
                     <article
@@ -221,6 +261,8 @@ export default function Home() {
                 </div>
 
                 <form
+                  action="/components"
+                  method="get"
                   className="mt-8 rounded-3xl border border-[var(--border)] bg-black/30 p-3"
                   role="search"
                 >
@@ -231,15 +273,15 @@ export default function Home() {
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
                       id="component-search-preview"
-                      name="component-search-preview"
+                      name="search"
                       placeholder="Search Button, Modal, owner, contract..."
                       className="min-h-12 flex-1 rounded-2xl border border-[var(--border)] bg-black/40 px-4 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted-strong)] focus:border-[var(--turquoise)]"
                     />
                     <button
-                      type="button"
+                      type="submit"
                       className="min-h-12 rounded-2xl bg-[var(--turquoise)] px-5 text-sm font-black text-slate-950 transition hover:scale-[1.02]"
                     >
-                      Preview Search
+                      Search Registry
                     </button>
                   </div>
                 </form>
@@ -267,6 +309,10 @@ export default function Home() {
                   <ProofRow
                     title="Architecture"
                     description="Typed models, React Query, Firebase, forms, and clean separation of concerns."
+                  />
+                  <ProofRow
+                    title="Production Workflow"
+                    description="Vercel deployment, GitHub Actions CI, Firebase Auth, Firestore bridge, and protected write paths."
                   />
                 </div>
               </article>

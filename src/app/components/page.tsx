@@ -47,7 +47,20 @@ const registryStats = [
   },
 ];
 
-export default function ComponentsPage() {
+type ComponentsPageProps = {
+  searchParams?: Promise<{
+    search?: string;
+  }>;
+};
+
+export default async function ComponentsPage({
+  searchParams,
+}: ComponentsPageProps) {
+  const resolvedSearchParams = await searchParams;
+  const initialSearch =
+    typeof resolvedSearchParams?.search === "string"
+      ? resolvedSearchParams.search
+      : "";
   return (
     <main
       id="main-content"
@@ -87,8 +100,7 @@ export default function ComponentsPage() {
                 Current milestone
               </p>
               <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                Static registry route using typed mock data. Search and filters
-                come next.
+                Search, filters, typed data, React Query, Firebase-ready persistence, and protected creation workflow are now wired.
               </p>
               <Link
                 href="/components/new"
@@ -167,7 +179,15 @@ export default function ComponentsPage() {
           </div>
         </section>
 
-        <ComponentRegistryClient initialComponents={sortedComponents} />
+        <ComponentRegistryClient
+          initialComponents={sortedComponents}
+          initialFilters={{
+            search: initialSearch,
+            status: "all",
+            category: "all",
+            owner: "all",
+          }}
+        />
       </GsapRevealScope>
     </main>
   );
