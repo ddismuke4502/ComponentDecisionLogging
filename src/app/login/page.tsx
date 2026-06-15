@@ -11,6 +11,7 @@ export default function LoginPage() {
     isAdmin,
     isLoading,
     isConfigured,
+    authError,
     signInWithGoogle,
     signOutUser,
   } = useAuth();
@@ -96,6 +97,8 @@ export default function LoginPage() {
             </div>
           ) : null}
 
+          {authError ? <AuthErrorAlert message={authError} /> : null}
+
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             {user ? (
               <Button type="button" variant="secondary" onClick={signOutUser}>
@@ -107,7 +110,7 @@ export default function LoginPage() {
                 onClick={signInWithGoogle}
                 disabled={!isConfigured || isLoading}
               >
-                Sign in with Google
+                {isLoading ? "Checking..." : "Sign in with Google"}
               </Button>
             )}
 
@@ -117,9 +120,30 @@ export default function LoginPage() {
             >
               View Registry
             </Link>
+
+            {user && isAdmin ? (
+              <Link
+                href="/components/new"
+                className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-teal-300/30 bg-teal-300/10 px-5 text-sm font-black text-[var(--turquoise-soft)] transition hover:border-[var(--turquoise)] hover:text-[var(--turquoise)]"
+              >
+                Create Component
+              </Link>
+            ) : null}
           </div>
         </Card>
       </div>
     </main>
+  );
+}
+
+function AuthErrorAlert({ message }: { message: string }) {
+  return (
+    <div
+      role="alert"
+      className="mt-6 rounded-2xl border border-rose-300/30 bg-rose-300/10 p-4 text-sm leading-7 text-rose-100"
+    >
+      <p className="font-black">Authentication failed.</p>
+      <p className="mt-1 break-words text-rose-100/90">{message}</p>
+    </div>
   );
 }
