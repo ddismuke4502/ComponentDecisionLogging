@@ -20,6 +20,23 @@ export type ApiMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export type DecisionImpact = "low" | "medium" | "high";
 
+export type DecisionCriterionScore = 1 | 2 | 3 | 4 | 5;
+
+export type DecisionOptionScores = {
+  performance: DecisionCriterionScore;
+  accessibility: DecisionCriterionScore;
+  bundleSize: DecisionCriterionScore;
+  developerExperience: DecisionCriterionScore;
+};
+
+export type DecisionOption = {
+  id: string;
+  name: string;
+  description: string;
+  scores: DecisionOptionScores;
+  tradeoffs: string[];
+};
+
 export type ComponentProp = {
   id: string;
   name: string;
@@ -48,7 +65,13 @@ export type ApiContract = {
 export type ComponentDecision = {
   id: string;
   title: string;
+  project: string;
+  tech: string[];
+  tags: string[];
   summary: string;
+  optionsConsidered: DecisionOption[];
+  chosenOptionId: string;
+  choice: string;
   rationale: string;
   author: string;
   impact: DecisionImpact;

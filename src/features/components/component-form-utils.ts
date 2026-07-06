@@ -55,7 +55,46 @@ export function createDefaultComponentFormValues(): ComponentFormValues {
       {
         id: createId("decision"),
         title: "",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript"],
+        tags: ["architecture"],
         summary: "",
+        optionsConsidered: [
+          {
+            id: "option-current-implementation",
+            name: "Current implementation",
+            description:
+              "Use the current component architecture and document the tradeoffs.",
+            scores: {
+              performance: 3,
+              accessibility: 3,
+              bundleSize: 3,
+              developerExperience: 3,
+            },
+            tradeoffs: [
+              "Fast to implement",
+              "May need deeper comparison later",
+            ],
+          },
+          {
+            id: "option-alternative-implementation",
+            name: "Alternative implementation",
+            description:
+              "Evaluate a different component approach before finalizing the decision.",
+            scores: {
+              performance: 3,
+              accessibility: 3,
+              bundleSize: 3,
+              developerExperience: 3,
+            },
+            tradeoffs: [
+              "More complete evaluation",
+              "Requires additional review time",
+            ],
+          },
+        ],
+        chosenOptionId: "option-current-implementation",
+        choice: "Use the current implementation",
         rationale: "",
         author: "",
         impact: "medium",

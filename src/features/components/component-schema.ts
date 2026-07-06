@@ -35,6 +35,31 @@ export const apiMethodSchema = z.enum([
 
 export const decisionImpactSchema = z.enum(["low", "medium", "high"]);
 
+export const decisionCriterionScoreSchema = z.union([
+  z.literal(1),
+  z.literal(2),
+  z.literal(3),
+  z.literal(4),
+  z.literal(5),
+]);
+
+export const decisionOptionScoresSchema = z.object({
+  performance: decisionCriterionScoreSchema,
+  accessibility: decisionCriterionScoreSchema,
+  bundleSize: decisionCriterionScoreSchema,
+  developerExperience: decisionCriterionScoreSchema,
+});
+
+export const decisionOptionSchema = z.object({
+  id: z.string().min(1, "Option id is required."),
+  name: z.string().min(2, "Option name is required."),
+  description: z
+    .string()
+    .min(10, "Option description should be at least 10 characters."),
+  scores: decisionOptionScoresSchema,
+  tradeoffs: z.array(z.string().min(3, "Tradeoff should be specific.")),
+});
+
 export const componentPropSchema = z.object({
   id: z.string().min(1, "Prop id is required."),
   name: z.string().min(1, "Prop name is required."),
@@ -60,15 +85,40 @@ export const apiContractSchema = z.object({
   notes: z.string().optional(),
 });
 
-export const componentDecisionSchema = z.object({
-  id: z.string().min(1, "Decision id is required."),
-  title: z.string().min(3, "Decision title should be at least 3 characters."),
-  summary: z.string().min(10, "Decision summary should be at least 10 characters."),
-  rationale: z.string().min(20, "Decision rationale should be at least 20 characters."),
-  author: z.string().min(2, "Decision author is required."),
-  impact: decisionImpactSchema,
-  createdAt: z.string().min(1, "Decision date is required."),
-});
+export const componentDecisionSchema = z
+  .object({
+    id: z.string().min(1, "Decision id is required."),
+    title: z
+      .string()
+      .min(3, "Decision title should be at least 3 characters."),
+    project: z.string().min(2, "Project name is required."),
+    tech: z.array(z.string().min(1, "Tech value is required.")),
+    tags: z.array(z.string().min(1, "Decision tag is required.")),
+    summary: z
+      .string()
+      .min(10, "Decision summary should be at least 10 characters."),
+    optionsConsidered: z
+      .array(decisionOptionSchema)
+      .min(2, "Add at least two options considered."),
+    chosenOptionId: z.string().min(1, "Chosen option is required."),
+    choice: z.string().min(3, "Choice made is required."),
+    rationale: z
+      .string()
+      .min(20, "Decision rationale should be at least 20 characters."),
+    author: z.string().min(2, "Decision author is required."),
+    impact: decisionImpactSchema,
+    createdAt: z.string().min(1, "Decision date is required."),
+  })
+  .refine(
+    (decision) =>
+      decision.optionsConsidered.some(
+        (option) => option.id === decision.chosenOptionId,
+      ),
+    {
+      message: "Chosen option must match one of the options considered.",
+      path: ["chosenOptionId"],
+    },
+  );
 
 export const componentOwnerSchema = z.object({
   name: z.string().min(2, "Owner name is required."),

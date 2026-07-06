@@ -59,6 +59,45 @@ export const mockComponents: ComponentRecord[] = [
       {
         id: "decision-button-native-element",
         title: "Use native button element",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript", "HTML"],
+        tags: ["accessibility", "semantics", "button"],
+        optionsConsidered: [
+          {
+            id: "option-native-button",
+            name: "Native button element",
+            description:
+              "Render a semantic button element and inherit browser keyboard behavior.",
+            scores: {
+              performance: 5,
+              accessibility: 5,
+              bundleSize: 5,
+              developerExperience: 4,
+            },
+            tradeoffs: [
+              "Best semantic baseline",
+              "Requires styling reset for visual consistency",
+            ],
+          },
+          {
+            id: "option-clickable-div",
+            name: "Clickable div",
+            description:
+              "Render a div and manually recreate button interaction behavior.",
+            scores: {
+              performance: 3,
+              accessibility: 1,
+              bundleSize: 2,
+              developerExperience: 2,
+            },
+            tradeoffs: [
+              "Flexible styling",
+              "Requires custom keyboard and ARIA behavior",
+            ],
+          },
+        ],
+        chosenOptionId: "option-native-button",
+        choice: "Use native button element",
         summary:
           "PrimaryActionButton must render a native button instead of a clickable div.",
         rationale:
@@ -70,6 +109,45 @@ export const mockComponents: ComponentRecord[] = [
       {
         id: "decision-button-loading-state",
         title: "Externalize loading state ownership",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript"],
+        tags: ["state", "async", "composition"],
+        optionsConsidered: [
+          {
+            id: "option-parent-loading-state",
+            name: "Parent-owned loading state",
+            description:
+              "Let the feature or parent component own async state and pass loading flags down.",
+            scores: {
+              performance: 4,
+              accessibility: 4,
+              bundleSize: 5,
+              developerExperience: 4,
+            },
+            tradeoffs: [
+              "Keeps UI primitive simple",
+              "Requires parent flows to wire state intentionally",
+            ],
+          },
+          {
+            id: "option-internal-loading-state",
+            name: "Internal loading state",
+            description:
+              "Let the button own loading behavior internally after user interaction.",
+            scores: {
+              performance: 3,
+              accessibility: 3,
+              bundleSize: 3,
+              developerExperience: 3,
+            },
+            tradeoffs: [
+              "Encapsulates behavior",
+              "Can duplicate async business logic across flows",
+            ],
+          },
+        ],
+        chosenOptionId: "option-parent-loading-state",
+        choice: "Externalize loading state ownership",
         summary:
           "Loading state should be controlled by the parent feature instead of internal component state.",
         rationale:
@@ -155,6 +233,45 @@ export const mockComponents: ComponentRecord[] = [
       {
         id: "decision-search-keyboard-first",
         title: "Prioritize keyboard navigation",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript", "Keyboard Events"],
+        tags: ["search", "keyboard", "accessibility"],
+        optionsConsidered: [
+          {
+            id: "option-keyboard-first-panel",
+            name: "Keyboard-first command panel",
+            description:
+              "Build the search panel around keyboard navigation, active state, and escape behavior.",
+            scores: {
+              performance: 4,
+              accessibility: 5,
+              bundleSize: 4,
+              developerExperience: 4,
+            },
+            tradeoffs: [
+              "Best power-user experience",
+              "Requires more interaction testing",
+            ],
+          },
+          {
+            id: "option-pointer-first-panel",
+            name: "Pointer-first dropdown",
+            description:
+              "Build a simpler dropdown interaction optimized for pointer selection.",
+            scores: {
+              performance: 4,
+              accessibility: 2,
+              bundleSize: 5,
+              developerExperience: 4,
+            },
+            tradeoffs: [
+              "Faster initial build",
+              "Weaker keyboard support for frequent users",
+            ],
+          },
+        ],
+        chosenOptionId: "option-keyboard-first-panel",
+        choice: "Prioritize keyboard navigation",
         summary:
           "SearchCommandPanel should be fully usable without a mouse or trackpad.",
         rationale:
@@ -166,6 +283,45 @@ export const mockComponents: ComponentRecord[] = [
       {
         id: "decision-search-empty-state",
         title: "Document empty and loading states",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript", "TanStack Query"],
+        tags: ["loading-state", "empty-state", "resilience"],
+        optionsConsidered: [
+          {
+            id: "option-explicit-search-states",
+            name: "Explicit loading, empty, and error states",
+            description:
+              "Render separate states for loading, empty results, successful results, and errors.",
+            scores: {
+              performance: 4,
+              accessibility: 4,
+              bundleSize: 4,
+              developerExperience: 5,
+            },
+            tradeoffs: [
+              "Clearer user feedback",
+              "Requires extra UI states and tests",
+            ],
+          },
+          {
+            id: "option-generic-search-message",
+            name: "Generic fallback message",
+            description:
+              "Use one generic message for all non-success search outcomes.",
+            scores: {
+              performance: 5,
+              accessibility: 2,
+              bundleSize: 5,
+              developerExperience: 3,
+            },
+            tradeoffs: [
+              "Simple implementation",
+              "Makes debugging and user recovery harder",
+            ],
+          },
+        ],
+        chosenOptionId: "option-explicit-search-states",
+        choice: "Document empty and loading states",
         summary:
           "Search results must clearly distinguish loading, empty, and error states.",
         rationale:
@@ -225,6 +381,45 @@ export const mockComponents: ComponentRecord[] = [
       {
         id: "decision-validation-aria-described-by",
         title: "Associate errors with fields",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript", "ARIA"],
+        tags: ["forms", "validation", "accessibility"],
+        optionsConsidered: [
+          {
+            id: "option-aria-describedby",
+            name: "Use aria-describedby",
+            description:
+              "Connect validation messages to invalid fields with accessible descriptions.",
+            scores: {
+              performance: 5,
+              accessibility: 5,
+              bundleSize: 5,
+              developerExperience: 4,
+            },
+            tradeoffs: [
+              "Strong screen-reader support",
+              "Requires consistent id wiring",
+            ],
+          },
+          {
+            id: "option-visual-only-error",
+            name: "Visual-only error text",
+            description:
+              "Render visible error text below fields without programmatic association.",
+            scores: {
+              performance: 5,
+              accessibility: 1,
+              bundleSize: 5,
+              developerExperience: 3,
+            },
+            tradeoffs: [
+              "Fast to render",
+              "Screen-reader users may miss field-level context",
+            ],
+          },
+        ],
+        chosenOptionId: "option-aria-describedby",
+        choice: "Associate errors with fields",
         summary:
           "Validation messages must be connected to their fields using accessible descriptions.",
         rationale:
@@ -297,6 +492,45 @@ export const mockComponents: ComponentRecord[] = [
       {
         id: "decision-health-score-transparent",
         title: "Make scoring criteria visible",
+        project: "Component Decision Log",
+        tech: ["React", "TypeScript", "Data Visualization"],
+        tags: ["metrics", "dashboard", "transparency"],
+        optionsConsidered: [
+          {
+            id: "option-transparent-score",
+            name: "Transparent scoring criteria",
+            description:
+              "Show the criteria, missing fields, and recommendations behind the health score.",
+            scores: {
+              performance: 4,
+              accessibility: 4,
+              bundleSize: 4,
+              developerExperience: 5,
+            },
+            tradeoffs: [
+              "Builds trust in the metric",
+              "Requires more detailed data modeling",
+            ],
+          },
+          {
+            id: "option-opaque-score",
+            name: "Opaque score only",
+            description:
+              "Show only the final score without explaining how it was calculated.",
+            scores: {
+              performance: 5,
+              accessibility: 2,
+              bundleSize: 5,
+              developerExperience: 2,
+            },
+            tradeoffs: [
+              "Simple dashboard display",
+              "Harder for teams to act on the result",
+            ],
+          },
+        ],
+        chosenOptionId: "option-transparent-score",
+        choice: "Make scoring criteria visible",
         summary:
           "Users should understand why a component receives a particular health score.",
         rationale:

@@ -112,3 +112,17 @@ describe("componentFormSchema", () => {
     expect(result.success).toBe(false);
   });
 });
+
+it("rejects decisions when the chosen option is not one of the options considered", () => {
+  const result = componentFormSchema.safeParse({
+    ...validFormValues,
+    decisions: [
+      {
+        ...validFormValues.decisions[0],
+        chosenOptionId: "option-does-not-exist",
+      },
+    ],
+  });
+
+  expect(result.success).toBe(false);
+});
