@@ -5,6 +5,7 @@ import { ComponentStatusBadge } from "@/components/component-log/ComponentStatus
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { mockComponents } from "@/data/mock-components";
+import { DecisionComparisonTable } from "@/components/component-log/DecisionComparisonTable";
 import {
   formatComponentCategory,
   formatComponentPlatform,
@@ -289,19 +290,35 @@ export default async function ComponentDetailPage({
                     <Badge variant="default">Impact: {decision.impact}</Badge>
                   </div>
 
-                  <p className="mt-4 text-sm leading-7 text-[var(--muted)]">
-                    <span className="font-bold text-[var(--foreground)]">
-                      Rationale:
-                    </span>{" "}
-                    {decision.rationale}
-                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+  <Badge variant="default">Project: {decision.project}</Badge>
+  {decision.tech.map((tech) => (
+    <Badge key={tech} variant="default">
+      {tech}
+    </Badge>
+  ))}
+  {decision.tags.map((tag) => (
+    <Badge key={tag} variant="default">
+      #{tag}
+    </Badge>
+  ))}
+</div>
 
-                  <p className="mt-4 text-xs text-[var(--muted-strong)]">
-                    Logged by {decision.author} on{" "}
-                    <time dateTime={decision.createdAt}>
-                      {formatReadableDate(decision.createdAt)}
-                    </time>
-                  </p>
+<p className="mt-4 text-sm leading-7 text-[var(--muted)]">
+  <span className="font-bold text-[var(--foreground)]">
+    Rationale:
+  </span>{" "}
+  {decision.rationale}
+</p>
+
+<DecisionComparisonTable decision={decision} />
+
+<p className="mt-4 text-xs text-[var(--muted-strong)]">
+  Logged by {decision.author} on{" "}
+  <time dateTime={decision.createdAt}>
+    {formatReadableDate(decision.createdAt)}
+  </time>
+</p>
                 </li>
               ))}
             </ol>
