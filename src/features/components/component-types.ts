@@ -109,4 +109,7 @@ export type ComponentFilters = {
   status: ComponentStatus | "all";
   category: ComponentCategory | "all";
   owner: string | "all";
+  project: string | "all";
+  tech: string | "all";
+  tag: string | "all";
 };

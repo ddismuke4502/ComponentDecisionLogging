@@ -100,7 +100,8 @@ export default async function ComponentsPage({
                 Current milestone
               </p>
               <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                Search, filters, typed data, React Query, Firebase-ready persistence, and protected creation workflow are now wired.
+                Search, filters, typed data, React Query, Firebase-ready
+                persistence, and protected creation workflow are now wired.
               </p>
               <Link
                 href="/components/new"
@@ -186,6 +187,9 @@ export default async function ComponentsPage({
             status: "all",
             category: "all",
             owner: "all",
+            project: "all",
+            tech: "all",
+            tag: "all",
           }}
         />
       </GsapRevealScope>

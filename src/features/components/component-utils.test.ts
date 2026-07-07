@@ -35,6 +35,56 @@ describe("component-utils", () => {
       status: "approved",
       category: "all",
       owner: "Design Systems",
+      project: "all",
+      tech: "all",
+      tag: "all",
+    });
+
+    it("filters component records by decision project", () => {
+      const results = filterComponents(mockComponents, {
+        search: "",
+        status: "all",
+        category: "all",
+        owner: "all",
+        project: "Component Decision Log",
+        tech: "all",
+        tag: "all",
+      });
+
+      expect(results).toHaveLength(mockComponents.length);
+    });
+
+    it("filters component records by decision tech", () => {
+      const results = filterComponents(mockComponents, {
+        search: "",
+        status: "all",
+        category: "all",
+        owner: "all",
+        project: "all",
+        tech: "ARIA",
+        tag: "all",
+      });
+
+      expect(results.map((component) => component.name)).toContain(
+        "FormValidationMessage",
+      );
+    });
+
+    it("filters component records by component or decision tag", () => {
+      const results = filterComponents(mockComponents, {
+        search: "",
+        status: "all",
+        category: "all",
+        owner: "all",
+        project: "all",
+        tech: "all",
+        tag: "accessibility",
+      });
+
+      expect(results.length).toBeGreaterThan(0);
+      expect(results.map((component) => component.name)).toContain(
+        "PrimaryActionButton",
+      );
     });
 
     expect(results).toHaveLength(1);

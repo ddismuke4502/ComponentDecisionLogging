@@ -73,6 +73,37 @@ export function getUniqueCategories(components: ComponentRecord[]) {
   );
 }
 
+export function getUniqueDecisionProjects(components: ComponentRecord[]) {
+  return Array.from(
+    new Set(
+      components.flatMap((component) =>
+        component.decisions.map((decision) => decision.project),
+      ),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+}
+
+export function getUniqueDecisionTech(components: ComponentRecord[]) {
+  return Array.from(
+    new Set(
+      components.flatMap((component) =>
+        component.decisions.flatMap((decision) => decision.tech),
+      ),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+}
+
+export function getUniqueDecisionTags(components: ComponentRecord[]) {
+  return Array.from(
+    new Set(
+      components.flatMap((component) => [
+        ...component.tags,
+        ...component.decisions.flatMap((decision) => decision.tags),
+      ]),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+}
+
 export function searchComponents(
   components: ComponentRecord[],
   searchTerm: string,
@@ -99,7 +130,21 @@ export function searchComponents(
       ...component.state.map((stateItem) => stateItem.name),
       ...component.state.map((stateItem) => stateItem.description),
       ...component.decisions.map((decision) => decision.title),
+      ...component.decisions.map((decision) => decision.project),
+      ...component.decisions.flatMap((decision) => decision.tech),
+      ...component.decisions.flatMap((decision) => decision.tags),
       ...component.decisions.map((decision) => decision.summary),
+      ...component.decisions.map((decision) => decision.choice),
+      ...component.decisions.map((decision) => decision.rationale),
+      ...component.decisions.flatMap((decision) =>
+        decision.optionsConsidered.map((option) => option.name),
+      ),
+      ...component.decisions.flatMap((decision) =>
+        decision.optionsConsidered.map((option) => option.description),
+      ),
+      ...component.decisions.flatMap((decision) =>
+        decision.optionsConsidered.flatMap((option) => option.tradeoffs),
+      ),
     ]
       .map(normalizeSearchValue)
       .join(" ");
@@ -124,7 +169,33 @@ export function filterComponents(
     const matchesOwner =
       filters.owner === "all" || component.owner.team === filters.owner;
 
-    return matchesStatus && matchesCategory && matchesOwner;
+    const matchesProject =
+      filters.project === "all" ||
+      component.decisions.some(
+        (decision) => decision.project === filters.project,
+      );
+
+    const matchesTech =
+      filters.tech === "all" ||
+      component.decisions.some((decision) =>
+        decision.tech.includes(filters.tech),
+      );
+
+    const matchesTag =
+      filters.tag === "all" ||
+      component.tags.includes(filters.tag) ||
+      component.decisions.some((decision) =>
+        decision.tags.includes(filters.tag),
+      );
+
+    return (
+      matchesStatus &&
+      matchesCategory &&
+      matchesOwner &&
+      matchesProject &&
+      matchesTech &&
+      matchesTag
+    );
   });
 }
 

@@ -19,6 +19,9 @@ import {
   filterComponents,
   formatComponentCategory,
   getUniqueCategories,
+  getUniqueDecisionProjects,
+  getUniqueDecisionTags,
+  getUniqueDecisionTech,
   getUniqueOwnerTeams,
 } from "@/features/components/component-utils";
 
@@ -39,6 +42,9 @@ const defaultFilters: ComponentFilters = {
   status: "all",
   category: "all",
   owner: "all",
+  project: "all",
+  tech: "all",
+  tag: "all",
 };
 
 export function ComponentRegistryClient({
@@ -65,6 +71,21 @@ export function ComponentRegistryClient({
     [components],
   );
 
+  const projects = useMemo(
+    () => getUniqueDecisionProjects(components),
+    [components],
+  );
+
+  const techOptions = useMemo(
+    () => getUniqueDecisionTech(components),
+    [components],
+  );
+
+  const tagOptions = useMemo(
+    () => getUniqueDecisionTags(components),
+    [components],
+  );
+
   const filteredComponents = useMemo(
     () => filterComponents(components, filters),
     [components, filters],
@@ -74,9 +95,12 @@ export function ComponentRegistryClient({
     filters.search.trim().length > 0 ||
     filters.status !== "all" ||
     filters.category !== "all" ||
-    filters.owner !== "all";
+    filters.owner !== "all" ||
+    filters.project !== "all" ||
+    filters.tech !== "all" ||
+    filters.tag !== "all";
 
-  const registryAnimationKey = `${filters.search}-${filters.status}-${filters.category}-${filters.owner}-${filteredComponents.length}`;
+  const registryAnimationKey = `${filters.search}-${filters.status}-${filters.category}-${filters.owner}-${filters.project}-${filters.tech}-${filters.tag}-${filteredComponents.length}`;
 
   function updateSearch(search: string) {
     setFilters((currentFilters) => ({
@@ -103,6 +127,27 @@ export function ComponentRegistryClient({
     setFilters((currentFilters) => ({
       ...currentFilters,
       owner,
+    }));
+  }
+
+  function updateProject(project: string | "all") {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      project,
+    }));
+  }
+
+  function updateTech(tech: string | "all") {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      tech,
+    }));
+  }
+
+  function updateTag(tag: string | "all") {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      tag,
     }));
   }
 
@@ -234,6 +279,75 @@ export function ComponentRegistryClient({
               </select>
             </div>
 
+            <div>
+              <label
+                htmlFor="decision-project-filter"
+                className="text-sm font-bold text-[var(--foreground)]"
+              >
+                Project
+              </label>
+              <select
+                id="decision-project-filter"
+                name="decision-project-filter"
+                value={filters.project}
+                onChange={(event) => updateProject(event.target.value)}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-[var(--border)] bg-black/35 px-4 text-sm text-[var(--foreground)] outline-none focus:border-[var(--turquoise)]"
+              >
+                <option value="all">All projects</option>
+                {projects.map((project) => (
+                  <option key={project} value={project}>
+                    {project}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="decision-tech-filter"
+                className="text-sm font-bold text-[var(--foreground)]"
+              >
+                Tech
+              </label>
+              <select
+                id="decision-tech-filter"
+                name="decision-tech-filter"
+                value={filters.tech}
+                onChange={(event) => updateTech(event.target.value)}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-[var(--border)] bg-black/35 px-4 text-sm text-[var(--foreground)] outline-none focus:border-[var(--turquoise)]"
+              >
+                <option value="all">All tech</option>
+                {techOptions.map((tech) => (
+                  <option key={tech} value={tech}>
+                    {tech}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label
+                htmlFor="decision-tag-filter"
+                className="text-sm font-bold text-[var(--foreground)]"
+              >
+                Tag
+              </label>
+              <select
+                id="decision-tag-filter"
+                name="decision-tag-filter"
+                value={filters.tag}
+                onChange={(event) => updateTag(event.target.value)}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-[var(--border)] bg-black/35 px-4 text-sm text-[var(--foreground)] outline-none focus:border-[var(--turquoise)]"
+              >
+                <option value="all">All tags</option>
+                {tagOptions.map((tag) => (
+                  <option key={tag} value={tag}>
+                    {tag}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <Button
               type="button"
               variant="secondary"
@@ -258,7 +372,7 @@ export function ComponentRegistryClient({
           <EmptyState
             eyebrow="No Results"
             title="No component records match those filters."
-            description="Try adjusting the search text, status, category, or owner filters to find matching component decisions."
+            description="Try adjusting the search text, lifecycle, ownership, project, tech, or tag filters to find matching component decisions."
             actionLabel="Clear Filters"
             onAction={resetFilters}
           />
