@@ -3,40 +3,19 @@ import type {
   ComponentDecision,
   DecisionOption,
 } from "@/features/components/component-types";
+import {
+  comparisonCriteria,
+  getChosenOption,
+} from "@/features/components/decision-comparison-utils";
 
 type DecisionComparisonTableProps = {
   decision: ComponentDecision;
 };
 
-const criteria = [
-  {
-    key: "performance",
-    label: "Performance",
-    description: "Runtime cost, rendering efficiency, and interaction speed.",
-  },
-  {
-    key: "accessibility",
-    label: "Accessibility",
-    description: "Semantic support, keyboard behavior, and assistive tech fit.",
-  },
-  {
-    key: "bundleSize",
-    label: "Bundle Size",
-    description: "Impact on shipped JavaScript and dependency weight.",
-  },
-  {
-    key: "developerExperience",
-    label: "Developer Experience",
-    description: "Ease of maintenance, testing, reuse, and implementation.",
-  },
-] as const;
-
 export function DecisionComparisonTable({
   decision,
 }: DecisionComparisonTableProps) {
-  const chosenOption = decision.optionsConsidered.find(
-    (option) => option.id === decision.chosenOptionId,
-  );
+  const chosenOption = getChosenOption(decision);
 
   return (
     <section
@@ -78,7 +57,7 @@ export function DecisionComparisonTable({
               <th scope="col" className="w-64 px-4 py-3 font-bold">
                 Option
               </th>
-              {criteria.map((criterion) => (
+              {comparisonCriteria.map((criterion) => (
                 <th key={criterion.key} scope="col" className="px-4 py-3">
                   <span className="block font-bold text-[var(--foreground)]">
                     {criterion.label}
@@ -117,7 +96,7 @@ export function DecisionComparisonTable({
                   </div>
                 </th>
 
-                {criteria.map((criterion) => (
+                {comparisonCriteria.map((criterion) => (
                   <td key={criterion.key} className="px-4 py-4">
                     <ScorePill score={option.scores[criterion.key]} />
                   </td>
@@ -140,7 +119,7 @@ export function DecisionComparisonTable({
   );
 }
 
-function ScorePill({ score }: { score: number }) {
+function ScorePill({ score }: { score: 1 | 2 | 3 | 4 | 5 }) {
   return (
     <div className="inline-flex min-w-20 items-center justify-center rounded-2xl border border-[var(--border)] bg-black/35 px-3 py-2 text-center">
       <span className="text-lg font-black text-[var(--turquoise-soft)]">
