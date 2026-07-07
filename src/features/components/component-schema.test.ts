@@ -40,7 +40,38 @@ const validFormValues: ComponentFormValues = {
     {
       id: "decision-native-button",
       title: "Use native button",
+      project: "Component Decision Log",
+      tech: ["React", "TypeScript"],
+      tags: ["button", "accessibility"],
       summary: "The component should render a native button element.",
+      optionsConsidered: [
+        {
+          id: "option-native-button",
+          name: "Native button element",
+          description: "Use a semantic button with built-in keyboard behavior.",
+          scores: {
+            performance: 5,
+            accessibility: 5,
+            bundleSize: 5,
+            developerExperience: 4,
+          },
+          tradeoffs: ["Best semantic support"],
+        },
+        {
+          id: "option-clickable-div",
+          name: "Clickable div",
+          description: "Use a div and recreate button behavior manually.",
+          scores: {
+            performance: 3,
+            accessibility: 1,
+            bundleSize: 3,
+            developerExperience: 2,
+          },
+          tradeoffs: ["More styling flexibility"],
+        },
+      ],
+      chosenOptionId: "option-native-button",
+      choice: "Use native button element",
       rationale:
         "Native buttons provide keyboard support, focus behavior, disabled state, and accessibility semantics by default.",
       author: "Maya Chen",
