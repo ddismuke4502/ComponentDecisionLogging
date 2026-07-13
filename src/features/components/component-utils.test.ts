@@ -40,54 +40,54 @@ describe("component-utils", () => {
       tag: "all",
     });
 
-    it("filters component records by decision project", () => {
-      const results = filterComponents(mockComponents, {
-        search: "",
-        status: "all",
-        category: "all",
-        owner: "all",
-        project: "Component Decision Log",
-        tech: "all",
-        tag: "all",
-      });
-
-      expect(results).toHaveLength(mockComponents.length);
-    });
-
-    it("filters component records by decision tech", () => {
-      const results = filterComponents(mockComponents, {
-        search: "",
-        status: "all",
-        category: "all",
-        owner: "all",
-        project: "all",
-        tech: "ARIA",
-        tag: "all",
-      });
-
-      expect(results.map((component) => component.name)).toContain(
-        "FormValidationMessage",
-      );
-    });
-
-    it("filters component records by component or decision tag", () => {
-      const results = filterComponents(mockComponents, {
-        search: "",
-        status: "all",
-        category: "all",
-        owner: "all",
-        project: "all",
-        tech: "all",
-        tag: "accessibility",
-      });
-
-      expect(results.length).toBeGreaterThan(0);
-      expect(results.map((component) => component.name)).toContain(
-        "PrimaryActionButton",
-      );
-    });
-
     expect(results).toHaveLength(1);
     expect(results[0].name).toBe("PrimaryActionButton");
+  });
+
+  it("filters component records by decision project", () => {
+    const results = filterComponents(mockComponents, {
+      search: "",
+      status: "all",
+      category: "all",
+      owner: "all",
+      project: "Component Decision Log",
+      tech: "all",
+      tag: "all",
+    });
+
+    expect(results).toHaveLength(mockComponents.length);
+  });
+
+  it("filters component records by decision tech", () => {
+    const results = filterComponents(mockComponents, {
+      search: "",
+      status: "all",
+      category: "all",
+      owner: "all",
+      project: "all",
+      tech: "ARIA",
+      tag: "all",
+    });
+
+    expect(results.map((component) => component.name)).toContain(
+      "FormValidationMessage",
+    );
+  });
+
+  it("filters component records by component or decision tag", () => {
+    const results = filterComponents(mockComponents, {
+      search: "",
+      status: "all",
+      category: "all",
+      owner: "all",
+      project: "all",
+      tech: "all",
+      tag: "accessibility",
+    });
+
+    expect(results.length).toBeGreaterThan(0);
+    expect(results.map((component) => component.name)).toContain(
+      "PrimaryActionButton",
+    );
   });
 });
