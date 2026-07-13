@@ -34,16 +34,55 @@ const formValues: ComponentFormValues = {
   },
   decisions: [
     {
-      id: "decision-keyboard-first",
-      title: "Prioritize keyboard navigation",
-      summary:
-        "The search panel should be fully usable without a mouse or trackpad.",
-      rationale:
-        "Command panels are power-user interfaces, so keyboard support is central to the expected interaction model.",
-      author: "Elena Torres",
-      impact: "high",
-      createdAt: "2026-05-22T16:00:00.000Z",
+  id: "decision-keyboard-first",
+  title: "Prioritize keyboard navigation",
+  project: "Component Decision Log",
+  tech: ["React", "TypeScript", "Keyboard Events"],
+  tags: ["search", "keyboard", "accessibility"],
+  summary:
+    "The search panel should be fully usable without a mouse or trackpad.",
+  optionsConsidered: [
+    {
+      id: "option-keyboard-first-panel",
+      name: "Keyboard-first command panel",
+      description:
+        "Build the search panel around keyboard navigation, active state, and escape behavior.",
+      scores: {
+        performance: 4,
+        accessibility: 5,
+        bundleSize: 4,
+        developerExperience: 4,
+      },
+      tradeoffs: [
+        "Best power-user experience",
+        "Requires more interaction testing",
+      ],
     },
+    {
+      id: "option-pointer-first-panel",
+      name: "Pointer-first dropdown",
+      description:
+        "Build a simpler dropdown interaction optimized for pointer selection.",
+      scores: {
+        performance: 4,
+        accessibility: 2,
+        bundleSize: 5,
+        developerExperience: 4,
+      },
+      tradeoffs: [
+        "Faster initial build",
+        "Weaker keyboard support for frequent users",
+      ],
+    },
+  ],
+  chosenOptionId: "option-keyboard-first-panel",
+  choice: "Prioritize keyboard navigation",
+  rationale:
+    "Command panels are power-user interfaces, so keyboard support is central to the expected interaction model.",
+  author: "Elena Torres",
+  impact: "high",
+  createdAt: "2026-05-22T16:00:00.000Z",
+},
   ],
   relatedComponentIds: [],
   accessibilityNotes: [
