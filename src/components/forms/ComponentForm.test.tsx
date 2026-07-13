@@ -176,10 +176,44 @@ async function fillDecisionStep(user: ReturnType<typeof userEvent.setup>) {
     "Use semantic table structure",
   );
 
+  fireEvent.change(screen.getByRole("textbox", { name: /^project$/i }), {
+    target: {
+      value: "Component Decision Log",
+    },
+  });
+
   fireEvent.change(screen.getByRole("textbox", { name: /decision summary/i }), {
     target: {
       value:
         "The table should preserve semantic relationships between headers and cells.",
+    },
+  });
+
+  fireEvent.change(screen.getByRole("textbox", { name: /^tech$/i }), {
+    target: {
+      value: "React, TypeScript, ARIA",
+    },
+  });
+
+  fireEvent.change(screen.getByRole("textbox", { name: /decision tags/i }), {
+    target: {
+      value: "accessibility, table, decision-log",
+    },
+  });
+
+  await user.type(
+    screen.getByRole("textbox", { name: /decision author/i }),
+    "Dameion Dismuke",
+  );
+
+  await user.selectOptions(
+    screen.getByRole("combobox", { name: /decision impact/i }),
+    "high",
+  );
+
+  fireEvent.change(screen.getByRole("textbox", { name: /choice made/i }), {
+    target: {
+      value: "Use semantic table structure",
     },
   });
 
@@ -193,13 +227,49 @@ async function fillDecisionStep(user: ReturnType<typeof userEvent.setup>) {
     },
   );
 
-  await user.type(
-    screen.getByRole("textbox", { name: /decision author/i }),
-    "Dameion Dismuke",
-  );
+  const optionNameInputs = screen.getAllByRole("textbox", {
+    name: /option name/i,
+  });
 
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: /decision impact/i }),
-    "high",
-  );
+  fireEvent.change(optionNameInputs[0], {
+    target: { value: "Semantic table element" },
+  });
+
+  fireEvent.change(optionNameInputs[1], {
+    target: { value: "Custom grid layout" },
+  });
+
+  const optionDescriptionInputs = screen.getAllByRole("textbox", {
+    name: /option description/i,
+  });
+
+  fireEvent.change(optionDescriptionInputs[0], {
+    target: {
+      value:
+        "Use a semantic table element so headers and cells keep their native relationships.",
+    },
+  });
+
+  fireEvent.change(optionDescriptionInputs[1], {
+    target: {
+      value:
+        "Use custom div-based grid markup and recreate table semantics manually.",
+    },
+  });
+
+  const tradeoffInputs = screen.getAllByRole("textbox", {
+    name: /tradeoffs/i,
+  });
+
+  fireEvent.change(tradeoffInputs[0], {
+    target: {
+      value: "Best semantics, Strong accessibility support",
+    },
+  });
+
+  fireEvent.change(tradeoffInputs[1], {
+    target: {
+      value: "Flexible layout, Requires manual semantics",
+    },
+  });
 }

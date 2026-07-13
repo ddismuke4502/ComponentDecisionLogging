@@ -66,17 +66,23 @@ const formSteps: FormStep[] = [
     ],
   },
   {
-    id: "decision",
-    label: "Decision",
-    description: "Initial architecture decision entry.",
-    fields: [
-      "decisions.0.title",
-      "decisions.0.summary",
-      "decisions.0.rationale",
-      "decisions.0.author",
-      "decisions.0.impact",
-    ],
-  },
+  id: "decision",
+  label: "Decision",
+  description: "Decision entry, options considered, and comparison criteria.",
+  fields: [
+    "decisions.0.title",
+    "decisions.0.project",
+    "decisions.0.tech",
+    "decisions.0.tags",
+    "decisions.0.summary",
+    "decisions.0.optionsConsidered",
+    "decisions.0.chosenOptionId",
+    "decisions.0.choice",
+    "decisions.0.rationale",
+    "decisions.0.author",
+    "decisions.0.impact",
+  ],
+},
   {
     id: "review",
     label: "Review",
@@ -95,13 +101,14 @@ export function ComponentForm() {
   const defaultValues = useMemo(() => createDefaultComponentFormValues(), []);
 
   const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    trigger,
-    formState: { errors, isSubmitting },
-  } = useForm<ComponentFormValues>({
+  register,
+  handleSubmit,
+  control,
+  setValue,
+  trigger,
+  watch,
+  formState: { errors, isSubmitting },
+} = useForm<ComponentFormValues>({
     resolver: zodResolver(componentFormSchema),
     defaultValues,
     mode: "onBlur",
@@ -276,8 +283,13 @@ export function ComponentForm() {
           ) : null}
 
           {currentStep.id === "decision" ? (
-            <ComponentDecisionStep register={register} errors={errors} />
-          ) : null}
+  <ComponentDecisionStep
+    register={register}
+    setValue={setValue}
+    watch={watch}
+    errors={errors}
+  />
+) : null}
 
           {currentStep.id === "review" ? (
             <ComponentReviewStep
